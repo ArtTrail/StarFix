@@ -25,6 +25,8 @@
 
             <TextBlock Text="Author" FontWeight="SemiBold" HorizontalAlignment="Center"/>
             <TextBlock Text="Art Trail" HorizontalAlignment="Center" Margin="0,4,0,2"/>
+            <TextBlock Classes="hint" Text="art.trail99@gmail.com" HorizontalAlignment="Center" Margin="0,0,0,2"/>
+            <TextBlock Classes="hint" Text="github.com/ArtTrail/StarFix" HorizontalAlignment="Center"/>
 
             <TextBlock TextWrapping="Wrap"
                        Classes="hint"
