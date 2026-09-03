@@ -1,0 +1,121 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="StarFix.Views.UserGuideView">
+
+    <Grid>
+        <ScrollViewer x:Name="MainScrollViewer" Padding="24,20" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="10" MaxWidth="820">
+
+                <TextBlock Classes="title" Text="StarFix User Guide"/>
+
+                <TextBlock Classes="h2" Text="Contents" Margin="0,16,0,0"/>
+                <StackPanel Spacing="6" Margin="8,0,0,0">
+                    <Button Classes="link" Content="1. Solving a single image" Click="GoToSection1"/>
+                    <Button Classes="link" Content="2. Overwrite vs. new file" Click="GoToSection2"/>
+                    <Button Classes="link" Content="3. Batch solving" Click="GoToSection3"/>
+                    <Button Classes="link" Content="4. Results and summaries" Click="GoToSection4"/>
+                    <Button Classes="link" Content="5. The Gaia catalog" Click="GoToSection5"/>
+                    <Button Classes="link" Content="6. Common error messages" Click="GoToSection6"/>
+                    <Button Classes="link" Content="7. Under the hood: packages, pipeline, and algorithms" Click="GoToSection7"/>
+                    <Button Classes="link" Content="8. References" Click="GoToSection8"/>
+                </StackPanel>
+
+                <TextBlock x:Name="Section1" Classes="h2" Text="1. Solving a single image" Margin="0,16,0,0"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="Click Browse and choose a FITS file. If the file's header already has RA/DEC keywords, they're filled in automatically as the search hint — edit them if you know a better position. Set the search radius to comfortably cover your position uncertainty plus the image's own field of view, then click Solve."/>
+
+                <TextBlock x:Name="Section2" Classes="h2" Text="2. Overwrite vs. new file" Margin="0,16,0,0"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="In Settings, choose whether a successful solve overwrites the original FITS file's WCS header in place (matching ASTAP's default behavior), or writes into a new copy named '&lt;file&gt;_solved_1.fits' (incrementing) alongside the original, leaving it untouched. New-file mode is the default."/>
+
+                <TextBlock x:Name="Section3" Classes="h2" Text="3. Batch solving" Margin="0,16,0,0"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="The Batch Solve button next to the Solve header lets you queue multiple files (browse a folder, or type/paste paths in directly) and solve them one at a time, with a live progress log. Each result appears in the same Results panel as single-file solves."/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="Within a same-target batch, each file after the first tries a shortcut first — reusing the previous file's solved position, rotation, and parity — before falling back to a full search if that doesn't check out. This is automatic and safe (a bad guess just falls back, it's never returned as a wrong answer), and it's why later files in a batch often solve much faster than the first."/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="Add folder deliberately skips files that are already solved — either the file's own header already carries a solved flag (overwrite mode), or a &quot;_solved_N&quot; copy of it already exists alongside it (new-file mode). This is intentional: re-running Add folder on a folder you've already processed won't re-solve or re-list those files. Every file in the folder is checked this way, not just a sample. Clicking Start also re-checks the whole list (catching anything typed/pasted in by hand, which skips the Add folder filter) — if any already-solved files are found, a popup lets you cancel or continue anyway."/>
+
+                <TextBlock x:Name="Section4" Classes="h2" Text="4. Results and summaries" Margin="0,16,0,0"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="Every completed solve appears as a card in the Results panel with the full solve summary — center coordinates, pixel scale, field of view, rotation, matched star count, and RMS residual. This history is saved automatically and persists across restarts, so nothing is lost when you close and reopen StarFix. The WCS itself is written directly into the solved FITS file's header, the same portable record any other tool (ASTAP, TransitLab, etc.) reads."/>
+
+                <TextBlock x:Name="Section5" Classes="h2" Text="5. The Gaia catalog" Margin="0,16,0,0"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="StarFix solves against a local, offline copy of the Gaia DR3 catalog (down to magnitude 17) — no internet connection is needed once it's installed. Use Tools → Download Gaia Catalog the first time you run StarFix; it's about 4.2 GB and only needs to be downloaded once."/>
+
+                <TextBlock x:Name="Section6" Classes="h2" Text="6. Common error messages" Margin="0,16,0,0"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="A failed solve shows the exact error from the solver. Most of these point to something about the frame itself, not a bug — here's what each one usually means:"/>
+
+                <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="&quot;List of matching triangles exhausted before an acceptable transformation was found&quot;"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="Enough stars were detected, but no consistent geometric match to the catalog could be found. The message includes the actual detected/catalog star counts for the attempt that produced it — a low detected count points toward thin cloud, haze, or a short/underexposed frame; a healthy detected count that still fails points toward a crowded field, star trailing (poor tracking), or a position hint too far from the frame's true center."/>
+
+                <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="&quot;Only N stars detected at fwhm=X&quot;"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="Fewer than 3 stars were found in the frame at every FWHM value tried. Usually thin cloud/haze, a very short exposure, or a genuinely star-poor field."/>
+
+                <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="&quot;Only N Gaia stars found in the search region — need at least 3&quot;"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="The catalog area covered by the position hint + search radius contains fewer than 3 real stars. Usually a search radius that's too small for the real pointing uncertainty, or a position hint that's substantially wrong."/>
+
+                <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="&quot;No RA/Dec hint given and none found in header&quot;"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="Neither the RA/Dec fields nor the file's own header have a position to start from. Type in a position hint manually."/>
+
+                <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="&quot;No 2D image data found in &lt;file&gt;&quot;"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="The FITS file has no readable 2D image — it may be a table-only file, or the image data is corrupted/empty."/>
+
+                <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="&quot;find_transform exceeded Ns&quot; / &quot;Gave up after Ns across candidates&quot;"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="The matching step (or the whole retry ladder) ran out of time rather than reaching a definite pass/fail. This usually means an unusually large or dense star list, or a heavily loaded machine — genuinely rare on typical frames."/>
+
+                <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="&quot;Solver executable not found&quot;"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="The bundled solve.exe is missing from PySolver\solve\. Reinstall StarFix."/>
+
+                <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="&quot;Solver process closed its output unexpectedly&quot; / &quot;match worker crashed&quot; / &quot;Matched target points did not map cleanly&quot; / &quot;Could not parse solver output&quot;"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="These indicate the solver itself crashed or hit an unexpected internal error — they're not data-quality messages. If you see one of these, it's worth reporting along with the file that triggered it."/>
+
+                <TextBlock x:Name="Section7" Classes="h2" Text="7. Under the hood: packages, pipeline, and algorithms" Margin="0,16,0,0"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="StarFix's solver is a Python program (packaged as a standalone solve.exe via PyInstaller, bundled inside PySolver\solve\ — no separate Python install is needed to run StarFix). It's built on a handful of open-source scientific Python packages: astropy [1] (FITS I/O, WCS, sky coordinates, time/epoch handling, image statistics), photutils [2] (star detection), astroalign [3] (geometric star-pattern matching), astropy_healpix (spatial indexing for the local Gaia catalog, using the HEALPix scheme [6]), scipy [8] (nearest-neighbor lookups), and numpy [9] throughout."/>
+
+                <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="The pipeline, in order"/>
+                <TextBlock TextWrapping="Wrap" Text="1. Read the FITS file's 2D image data and header."/>
+                <TextBlock TextWrapping="Wrap" Text="2. Detect stars in the image with photutils' DAOStarFinder — the DAOFIND algorithm [7] — background and noise are estimated via sigma-clipped image statistics, and detections are sorted brightest-first."/>
+                <TextBlock TextWrapping="Wrap" Text="3. Query the local, offline Gaia DR3 [4] catalog for stars near the position hint. This is a self-built catalog, spatially indexed with HEALPix [6] (astropy_healpix) for fast lookup, built directly from ESA's own public gaiadr3.gaia_source_lite table down to magnitude 17."/>
+                <TextBlock TextWrapping="Wrap" Text="4. Correct each catalog star's position for proper motion, from Gaia DR3's reference epoch (2016.0) forward to the frame's actual observation date, using each star's Gaia pmra/pmdec."/>
+                <TextBlock TextWrapping="Wrap" Text="5. Project the (proper-motion-corrected) catalog RA/Dec onto a flat tangent plane centered on the position hint — a gnomonic (TAN) projection [5] — this turns catalog sky coordinates and detected pixel coordinates into two directly comparable point sets, without needing to already know the pixel scale or rotation."/>
+                <TextBlock TextWrapping="Wrap" Text="6. Match the two point sets — astroalign [3] builds triangles from nearby points in each set, looks for triangles with matching shapes between the detected and catalog sets, and checks how many additional points agree with the resulting transform."/>
+                <TextBlock TextWrapping="Wrap" Text="7. Grow and refine the match — repeatedly re-project every catalog star through the current WCS, find its nearest detected star (scipy [8]), keep only mutual-nearest pairs, and refit, until the match set stops changing."/>
+                <TextBlock TextWrapping="Wrap" Text="8. Fit the final WCS from the matched pixel/sky pairs (astropy's [1] TAN-projection fit [5]) and write it into the FITS header alongside the solved flag."/>
+
+                <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="Why some files solve almost instantly"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="The right star-detection FWHM and how many stars to feed the matcher aren't known in advance, so StarFix tries several of each — and races those combinations concurrently (separate processes) rather than one at a time. Within a same-target batch, each file after the first also tries a shortcut first, reusing the previous file's already-solved position, rotation, and parity, before falling back to the full search if that doesn't check out (see section 3)."/>
+
+                <TextBlock x:Name="Section8" Classes="h2" Text="8. References" Margin="0,16,0,0"/>
+                <TextBlock TextWrapping="Wrap" Text="[1] Astropy Collaboration, Price-Whelan, A. M., et al. 2022, &quot;The Astropy Project: Sustaining and Growing a Community-oriented Open-source Project and the Latest Major Release (v5.0),&quot; The Astrophysical Journal, 935, 167."/>
+                <TextBlock TextWrapping="Wrap" Text="[2] Bradley, L., Sipőcz, B., Robitaille, T., et al., &quot;astropy/photutils&quot; (Zenodo). See photutils.readthedocs.io for the current citation record."/>
+                <TextBlock TextWrapping="Wrap" Text="[3] Beroiz, M., Cabral, J. B., &amp; Sanchez, B. 2020, &quot;Astroalign: A Python module for astronomical image registration,&quot; Astronomy and Computing, 32, 100384."/>
+                <TextBlock TextWrapping="Wrap" Text="[4] Gaia Collaboration, Vallenari, A., Brown, A. G. A., et al. 2023, &quot;Gaia Data Release 3: Summary of the content and survey properties,&quot; Astronomy &amp; Astrophysics, 674, A1."/>
+                <TextBlock TextWrapping="Wrap" Text="[5] Calabretta, M. R., &amp; Greisen, E. W. 2002, &quot;Representations of celestial coordinates in FITS,&quot; Astronomy &amp; Astrophysics, 395, 1077."/>
+                <TextBlock TextWrapping="Wrap" Text="[6] Górski, K. M., Hivon, E., Banday, A. J., et al. 2005, &quot;HEALPix: A Framework for High-Resolution Discretization and Fast Analysis of Data Distributed on the Sphere,&quot; The Astrophysical Journal, 622, 759."/>
+                <TextBlock TextWrapping="Wrap" Text="[7] Stetson, P. B. 1987, &quot;DAOPHOT: A Computer Program for Crowded-Field Stellar Photometry,&quot; Publications of the Astronomical Society of the Pacific, 99, 191."/>
+                <TextBlock TextWrapping="Wrap" Text="[8] Virtanen, P., Gommers, R., Oliphant, T. E., et al. 2020, &quot;SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python,&quot; Nature Methods, 17, 261."/>
+                <TextBlock TextWrapping="Wrap" Text="[9] Harris, C. R., Millman, K. J., van der Walt, S. J., et al. 2020, &quot;Array programming with NumPy,&quot; Nature, 585, 357."/>
+
+                <Border Height="60"/>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <Button Classes="fab" Content="&#x2191;" Click="OnBackToTopClick" ToolTip.Tip="Back to top"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,28,28"/>
+    </Grid>
+
+</UserControl>

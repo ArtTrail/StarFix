@@ -1,0 +1,56 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:StarFix.ViewModels"
+        x:DataType="vm:BatchSolveViewModel"
+        x:Class="StarFix.Views.BatchSolveWindow"
+        Title="Batch Solve"
+        Width="820" Height="720"
+        WindowStartupLocation="CenterOwner">
+
+    <DockPanel Margin="16">
+
+        <StackPanel DockPanel.Dock="Top" Spacing="10">
+            <TextBlock Classes="h2" Text="Batch Solve"/>
+            <TextBlock Classes="hint" TextWrapping="Wrap"
+                       Text="Solves every file below, one at a time. Uses the exact same solver as single-file Solve — nothing here changes how an individual file is processed."/>
+
+            <Grid ColumnDefinitions="Auto,*" Margin="0,4,0,0">
+                <TextBlock Grid.Column="0" Text="Search radius (deg):" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <NumericUpDown Grid.Column="1" Value="{Binding RadiusDeg}" Minimum="0.05" Maximum="10" Increment="0.1"
+                               FormatString="F2" HorizontalAlignment="Left" Width="140"/>
+            </Grid>
+
+            <TextBlock Classes="h2" Text="Files" Margin="0,8,0,0"/>
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Button Classes="toolbar" Content="Add folder" Command="{Binding BrowseFolderCommand}"/>
+            </StackPanel>
+            <TextBlock Classes="hint" TextWrapping="Wrap"
+                       Text="Add folder pulls in every .fits/.fit/.fts file from a folder. The list below is still editable by hand."/>
+
+            <TextBox Text="{Binding FilePathsText}" AcceptsReturn="True" Height="140"
+                     Watermark="One FITS file path per line"/>
+
+            <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,8,0,0">
+                <Button Classes="primary" Content="Start" Command="{Binding StartCommand}" IsEnabled="{Binding !IsRunning}"/>
+                <Button Classes="toolbar" Content="Cancel" Command="{Binding CancelCommand}" IsEnabled="{Binding IsRunning}"/>
+                <TextBlock Classes="hint" Text="{Binding Status}" VerticalAlignment="Center"/>
+            </StackPanel>
+            <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsRunning}" Height="4" Margin="0,2,0,4"/>
+        </StackPanel>
+
+        <TextBlock DockPanel.Dock="Top" Classes="h2" Text="Progress Log" Margin="0,8,0,4"/>
+
+        <!-- Last child, no explicit Dock — DockPanel's LastChildFill gives it all remaining
+             vertical space (previously this was docked Bottom and declared last, which made
+             THIS element the fill target instead of the log box below it, pushing "Progress
+             Log" itself down into the middle of a big empty gap). -->
+        <Border BorderBrush="{StaticResource BrushSep}" BorderThickness="1">
+            <ScrollViewer x:Name="LogScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <TextBox x:Name="LogTextBox" Text="{Binding Log}" IsReadOnly="True" AcceptsReturn="True"
+                         FontFamily="Consolas,Courier New,monospace" FontSize="13"
+                         BorderThickness="0" Background="Transparent"/>
+            </ScrollViewer>
+        </Border>
+
+    </DockPanel>
+</Window>

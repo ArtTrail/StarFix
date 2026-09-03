@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:StarFix.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="500"
+             x:Class="StarFix.Views.SolveView"
+             x:DataType="vm:SolveViewModel">
+
+    <Border Classes="card">
+        <StackPanel Spacing="10">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Classes="h2" Text="Solve" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" Classes="toolbar" Content="Batch Solve" Command="{Binding BatchSolveCommand}"/>
+            </Grid>
+
+            <Border Background="{StaticResource BrushBg}" CornerRadius="4" Padding="10,8"
+                    IsVisible="{Binding !IsCatalogInstalled}">
+                <TextBlock Classes="warn" TextWrapping="Wrap"
+                           Text="Gaia catalog not installed. Use Tools → Download Gaia Catalog first."/>
+            </Border>
+
+            <StackPanel Spacing="4">
+                <TextBlock Text="FITS file"/>
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBox Grid.Column="0" Text="{Binding FilePath}" Watermark="Choose a FITS file…" IsReadOnly="True"/>
+                    <Button Grid.Column="1" Classes="toolbar" Content="Browse" Click="OnBrowseClick" Margin="6,0,0,0"/>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel Spacing="4">
+                <TextBlock Text="RA hint (deg)" Classes="hint"/>
+                <TextBox Text="{Binding RaText}"/>
+            </StackPanel>
+
+            <StackPanel Spacing="4">
+                <TextBlock Text="Dec hint (deg)" Classes="hint"/>
+                <TextBox Text="{Binding DecText}"/>
+            </StackPanel>
+
+            <StackPanel Spacing="4">
+                <TextBlock Text="Search radius (deg)" Classes="hint"/>
+                <NumericUpDown Value="{Binding RadiusDeg}" Minimum="0.05" Maximum="10" Increment="0.1" FormatString="F2"/>
+            </StackPanel>
+
+            <Button Classes="primary" Content="Solve" Command="{Binding SolveCommand}"
+                    HorizontalAlignment="Stretch" Margin="0,8,0,0"/>
+
+            <TextBlock Text="{Binding StatusText}" TextWrapping="Wrap"
+                       Classes.hint="{Binding !StatusIsError}"
+                       Classes.err="{Binding StatusIsError}"/>
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -1,0 +1,69 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:StarFix.ViewModels"
+        xmlns:views="using:StarFix.Views"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="760"
+        x:Class="StarFix.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="avares://StarFix/Assets/StarFix.ico"
+        Width="1200" Height="760"
+        MinWidth="960" MinHeight="600">
+
+    <DockPanel>
+
+        <!-- ── Menu bar ─────────────────────────────────────────────────── -->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Tools">
+                <MenuItem Header="Download Gaia Catalog"
+                          Click="OnDownloadCatalogClick"/>
+                <Separator/>
+                <MenuItem Header="Settings"
+                          Click="OnSettingsClick"/>
+                <MenuItem Header="Diagnostics"
+                          Click="OnDiagnosticsClick"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="User Guide"
+                          Click="OnUserGuideClick"/>
+                <MenuItem Header="Revision History"
+                          Click="OnRevisionHistoryClick"/>
+                <Separator/>
+                <MenuItem Header="About StarFix"
+                          Click="OnAboutClick"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- ── Header banner: logo + title, bigger than just the window/taskbar icon ── -->
+        <Border DockPanel.Dock="Top" Padding="16,10,16,10">
+            <StackPanel Orientation="Horizontal" Spacing="14" VerticalAlignment="Center">
+                <Image Source="avares://StarFix/Assets/StarFix_logo.png" Width="104" Height="104"/>
+                <StackPanel VerticalAlignment="Center" Spacing="0">
+                    <TextBlock Classes="title" Text="StarFix"/>
+                    <TextBlock Classes="hint" Text="Plate solving via Gaia DR3 + astroalign"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- ── Separator ────────────────────────────────────────────────── -->
+        <Rectangle DockPanel.Dock="Top"
+                   Height="1"
+                   Fill="{StaticResource BrushSep}"
+                   Margin="10,4,10,0"/>
+
+        <!-- ── Bottom attribution bar ───────────────────────────────────── -->
+        <Border DockPanel.Dock="Bottom" Padding="0,2,10,4">
+            <TextBlock x:Name="AttributionText"
+                       Classes="hint"
+                       HorizontalAlignment="Right"/>
+        </Border>
+
+        <!-- ── Main content: Solve panel (left) + live Results panel (right) ── -->
+        <Grid ColumnDefinitions="380,*" Margin="10">
+            <views:SolveView Grid.Column="0" DataContext="{Binding Solve}" Margin="0,0,10,0"/>
+            <views:ResultsView Grid.Column="1" DataContext="{Binding Results}"/>
+        </Grid>
+
+    </DockPanel>
+</Window>

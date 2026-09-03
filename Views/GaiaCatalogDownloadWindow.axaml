@@ -1,0 +1,42 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:StarFix.ViewModels"
+        x:DataType="vm:GaiaCatalogDownloadViewModel"
+        x:Class="StarFix.Views.GaiaCatalogDownloadWindow"
+        Title="Download Gaia Catalog"
+        Width="520" SizeToContent="Height" CanResize="False"
+        WindowStartupLocation="CenterOwner">
+
+    <StackPanel Margin="24" Spacing="14">
+
+        <TextBlock Classes="h2" Text="{Binding HeadlineText}" TextWrapping="Wrap"
+                   Classes.err="{Binding IsError}"/>
+
+        <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsProbing}" Height="4"/>
+
+        <StackPanel IsVisible="{Binding IsError}" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+            <Button Classes="toolbar" Content="Close" Command="{Binding CancelCommand}"/>
+            <Button Classes="primary" Content="Retry" Command="{Binding RetryCommand}"/>
+        </StackPanel>
+
+        <StackPanel IsVisible="{Binding IsConfirmVisible}" Spacing="10">
+            <TextBlock Text="{Binding ConfirmText}" TextWrapping="Wrap"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+                <Button Classes="toolbar" Content="Cancel" Command="{Binding CancelCommand}"/>
+                <Button Classes="primary" Content="Download" Command="{Binding ConfirmCommand}"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel IsVisible="{Binding IsDownloading}" Spacing="8">
+            <ProgressBar Value="{Binding ProgressValue}" Maximum="{Binding ProgressMax}" Height="10"/>
+            <TextBlock Classes="hint" Text="{Binding StatusText}" TextWrapping="Wrap"/>
+            <Button Classes="toolbar" Content="Cancel" Command="{Binding CancelCommand}" HorizontalAlignment="Right"/>
+        </StackPanel>
+
+        <StackPanel IsVisible="{Binding IsDone}" Spacing="10">
+            <TextBlock Classes="ok" Text="{Binding StatusText}" TextWrapping="Wrap"/>
+            <Button Classes="primary" Content="Close" Command="{Binding CloseCommand}" HorizontalAlignment="Right"/>
+        </StackPanel>
+
+    </StackPanel>
+</Window>

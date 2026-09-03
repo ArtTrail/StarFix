@@ -1,0 +1,180 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="StarFix.App"
+             RequestedThemeVariant="Dark">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- ── Nord colour palette (matches TransitLab / VariLab) ─────────── -->
+            <SolidColorBrush x:Key="BrushBg"      Color="#2e3440"/>
+            <SolidColorBrush x:Key="BrushBg2"     Color="#3b4252"/>
+            <SolidColorBrush x:Key="BrushField"   Color="#434c5e"/>
+            <SolidColorBrush x:Key="BrushFg"      Color="#eceff4"/>
+            <SolidColorBrush x:Key="BrushAccent"  Color="#88c0d0"/>
+            <SolidColorBrush x:Key="BrushHint"    Color="#8892a0"/>
+            <SolidColorBrush x:Key="BrushBtn"     Color="#5e81ac"/>
+            <SolidColorBrush x:Key="BrushBtnHov"  Color="#81a1c1"/>
+            <SolidColorBrush x:Key="BrushSep"     Color="#4c566a"/>
+            <SolidColorBrush x:Key="BrushWarn"    Color="#ebcb8b"/>
+            <SolidColorBrush x:Key="BrushOk"      Color="#a3be8c"/>
+            <SolidColorBrush x:Key="BrushErr"     Color="#bf616a"/>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme/>
+
+        <!-- ── Window background ──────────────────────────────────────────── -->
+        <Style Selector="Window">
+            <Setter Property="Background" Value="{StaticResource BrushBg}"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+        </Style>
+
+        <!-- ── TextBlock classes ──────────────────────────────────────────── -->
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource BrushFg}"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize"   Value="20"/>
+        </Style>
+        <Style Selector="TextBlock.title">
+            <Setter Property="FontSize"   Value="26"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <Style Selector="TextBlock.h2">
+            <Setter Property="FontSize"   Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource BrushAccent}"/>
+        </Style>
+        <Style Selector="TextBlock.hint">
+            <Setter Property="FontSize"   Value="17"/>
+            <Setter Property="FontStyle"  Value="Italic"/>
+            <Setter Property="Foreground" Value="{StaticResource BrushHint}"/>
+        </Style>
+        <Style Selector="TextBlock.warn">
+            <Setter Property="FontSize"   Value="17"/>
+            <Setter Property="Foreground" Value="{StaticResource BrushWarn}"/>
+        </Style>
+        <Style Selector="TextBlock.ok">
+            <Setter Property="FontSize"   Value="17"/>
+            <Setter Property="Foreground" Value="{StaticResource BrushOk}"/>
+        </Style>
+        <Style Selector="TextBlock.err">
+            <Setter Property="FontSize"   Value="17"/>
+            <Setter Property="Foreground" Value="{StaticResource BrushErr}"/>
+        </Style>
+        <Style Selector="TextBlock.hint.err">
+            <Setter Property="Foreground" Value="{StaticResource BrushErr}"/>
+        </Style>
+
+        <!-- ── Input controls ─────────────────────────────────────────────── -->
+        <Style Selector="TextBox">
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize"   Value="20"/>
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize"   Value="20"/>
+        </Style>
+        <Style Selector="NumericUpDown">
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize"   Value="20"/>
+        </Style>
+        <Style Selector="CheckBox">
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize"   Value="20"/>
+        </Style>
+
+        <!-- ── Toolbar buttons ────────────────────────────────────────────── -->
+        <Style Selector="Button.toolbar">
+            <Setter Property="Background"  Value="{StaticResource BrushBtn}"/>
+            <Setter Property="Foreground"  Value="{StaticResource BrushFg}"/>
+            <Setter Property="FontFamily"  Value="Arial"/>
+            <Setter Property="FontSize"    Value="18"/>
+            <Setter Property="FontWeight"  Value="Bold"/>
+            <Setter Property="Padding"     Value="12,6"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Button.toolbar:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource BrushBtnHov}"/>
+        </Style>
+
+        <!-- ── Primary action button ──────────────────────────────────────── -->
+        <Style Selector="Button.primary">
+            <Setter Property="Background"  Value="{StaticResource BrushAccent}"/>
+            <Setter Property="Foreground"  Value="{StaticResource BrushBg}"/>
+            <Setter Property="FontFamily"  Value="Arial"/>
+            <Setter Property="FontSize"    Value="18"/>
+            <Setter Property="FontWeight"  Value="Bold"/>
+            <Setter Property="Padding"     Value="14,6"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Button.primary:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource BrushBtnHov}"/>
+        </Style>
+
+        <!-- ── Generic button content centering (Avalonia default stretch quirk) ── -->
+        <Style Selector="Button">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment"   Value="Center"/>
+        </Style>
+
+        <!-- ── Hyperlink-style buttons (User Guide table of contents) ────────── -->
+        <Style Selector="Button.link">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{StaticResource BrushAccent}"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="Button.link:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style Selector="Button.link:pointerover">
+            <Setter Property="Foreground" Value="{StaticResource BrushBtnHov}"/>
+        </Style>
+
+        <!-- ── Floating round action button ("back to top") ──────────────────── -->
+        <Style Selector="Button.fab">
+            <Setter Property="Background" Value="{StaticResource BrushBtn}"/>
+            <Setter Property="Foreground" Value="{StaticResource BrushFg}"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="CornerRadius" Value="24"/>
+            <Setter Property="Width" Value="48"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+        <Style Selector="Button.fab:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource BrushBtnHov}"/>
+        </Style>
+
+        <!-- ── NumericUpDown spinner: decrease on left, increase on right ───── -->
+        <Style Selector="NumericUpDown /template/ ButtonSpinner /template/ RepeatButton#PART_IncreaseButton">
+            <Setter Property="Grid.Column" Value="1"/>
+        </Style>
+        <Style Selector="NumericUpDown /template/ ButtonSpinner /template/ RepeatButton#PART_DecreaseButton">
+            <Setter Property="Grid.Column" Value="0"/>
+        </Style>
+
+        <!-- ── Menu bar ───────────────────────────────────────────────────── -->
+        <Style Selector="MenuItem">
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize"   Value="18"/>
+        </Style>
+
+        <!-- ── Result cards (live Results panel) ──────────────────────────── -->
+        <Style Selector="Border.card">
+            <Setter Property="Background"     Value="{StaticResource BrushBg2}"/>
+            <Setter Property="CornerRadius"   Value="6"/>
+            <Setter Property="Padding"        Value="14,10"/>
+            <Setter Property="Margin"         Value="0,0,0,8"/>
+            <Setter Property="BorderBrush"    Value="{StaticResource BrushSep}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </Application.Styles>
+
+</Application>

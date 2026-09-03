@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="StarFix.Views.RevisionHistoryView">
+
+    <ScrollViewer Padding="24,20">
+        <StackPanel Spacing="6">
+
+            <TextBlock Classes="h2" Text="v1.0.0  —  2026-09-02"/>
+            <TextBlock TextWrapping="Wrap" Text="• New: first release — single-file and batch plate solving against the self-built, offline Gaia DR3 catalog."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: overwrite-existing vs. new-file output modes."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: live Results panel with the full per-solve summary, persisted across restarts, with Clear and Save."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: Batch Solve keeps one solver process alive for the whole batch instead of relaunching per file — narrows the catalog search radius once a field's position is confirmed, and automatically skips files already solved."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: Gaia catalog download/install manager, with byte-exact integrity verification per file."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: About, Revision History, User Guide, Diagnostics — same conventions as TransitLab/VariLab."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: each solve attempt now races several detection/match candidates concurrently instead of trying them one at a time, and a same-target batch seeds each new file's WCS from the previous file's solved position, rotation, and parity — skipping the full search entirely when that shortcut checks out, with an automatic, safe fallback to the full search when it doesn't. Confirmed on real batches: ~2x faster on a sparse exoplanet-host field, and up to ~9x faster on a denser field where nearly every file after the first solves near-instantly."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: redesigned sextant logo and app icon; header logo doubled in size."/>
+            <TextBlock TextWrapping="Wrap" Text="• Changed: Batch Solve button moved out of the Tools menu to sit directly in the Solve panel's header; ellipses removed from button labels."/>
+            <TextBlock TextWrapping="Wrap" Text="• Removed: Batch Solve's &quot;Import from file&quot; (CSV/XLSX) file-list import — Add Folder and typing/pasting paths directly remain."/>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

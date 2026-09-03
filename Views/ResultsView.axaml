@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:StarFix.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="700"
+             x:Class="StarFix.Views.ResultsView"
+             x:DataType="vm:ResultsViewModel">
+
+    <Border Classes="card">
+        <DockPanel>
+            <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,10">
+                <TextBlock Grid.Column="0" Classes="h2" Text="Results" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" Classes="toolbar" Content="Save" Command="{Binding SaveCommand}" Margin="0,0,6,0"/>
+                <Button Grid.Column="2" Classes="toolbar" Content="Clear" Command="{Binding ClearCommand}"/>
+            </Grid>
+
+            <ScrollViewer x:Name="ResultsScrollViewer">
+                <ItemsControl ItemsSource="{Binding Entries}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:SolveResultEntry">
+                            <Border Classes="card">
+                                <StackPanel Spacing="2">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <TextBlock Grid.Column="0" Text="{Binding FileName}" FontWeight="Bold"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding TimestampText}" Classes="hint"/>
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding ErrorMessage}"
+                                               Classes="err"
+                                               IsVisible="{Binding !Success}"
+                                               TextWrapping="Wrap"/>
+
+                                    <!-- Shows the exact same complete summary text solve.exe itself produces
+                                         (format_solution_summary's output) rather than a hand-picked subset of
+                                         fields — guarantees nothing (like Dec, missed here once already) gets
+                                         silently left off the card. -->
+                                    <TextBlock IsVisible="{Binding Success}"
+                                               Text="{Binding Result.Text}"
+                                               FontFamily="Consolas,Courier New,monospace"
+                                               FontSize="13"
+                                               Classes="ok"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+    </Border>
+</UserControl>

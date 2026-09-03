@@ -1,0 +1,24 @@
+# .NET build output
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# The frozen Python solver (PyInstaller build output, ~189MB/1800+ files) — a build
+# artifact bundled at build time from a separate project, not source. Shipped via
+# GitHub Releases instead of git.
+PySolver/solve/
+
+# Local staging folder for README screenshots — the images themselves live in
+# docs/screenshots/ once added to the repo.
+For ReadMe.MD/
+
+# Working files from development — not part of the app
+Screenshot *.png
+Sextant Logo.dc.html
+sextant-logo-1024.png
+
+# OS cruft
+.DS_Store
+Thumbs.db
