@@ -27,7 +27,10 @@ StarFix's solver detects stars in the image (photutils' DAOStarFinder), queries 
 
 ## Installation
 
-Download the latest release from the [Releases](../../releases) page — it ships as a ready-to-run build with the solver already bundled.
+Download the latest release from the [Releases](../../releases) page — two options, both with the solver already bundled:
+
+- **`StarFix-Setup-vX.Y.Z.exe`** — a proper installer (Start Menu shortcut, optional desktop shortcut, clean uninstall). Installs per-user, no admin rights needed.
+- **`StarFix-vX.Y.Z-win-x64.zip`** — a portable, self-contained build. Unzip and run `StarFix.exe` directly, no install step.
 
 ## Building from source
 
