@@ -4,6 +4,7 @@ obj/
 *.user
 *.suo
 .vs/
+publish/
 
 # The frozen Python solver (PyInstaller build output, ~189MB/1800+ files) — a build
 # artifact bundled at build time from a separate project, not source. Shipped via
