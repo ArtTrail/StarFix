@@ -31,6 +31,7 @@ public partial class UserGuideView : UserControl
     private void GoToSection7(object? sender, RoutedEventArgs e) => ScrollToSection(Section7);
     private void GoToSection8(object? sender, RoutedEventArgs e) => ScrollToSection(Section8);
     private void GoToSection9(object? sender, RoutedEventArgs e) => ScrollToSection(Section9);
+    private void GoToSection10(object? sender, RoutedEventArgs e) => ScrollToSection(Section10);
 
     private void OnBackToTopClick(object? sender, RoutedEventArgs e) =>
         MainScrollViewer.Offset = new Vector(MainScrollViewer.Offset.X, 0);

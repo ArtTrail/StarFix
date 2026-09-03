@@ -18,7 +18,8 @@
                     <Button Classes="link" Content="6. Keeping StarFix up to date" Click="GoToSection6"/>
                     <Button Classes="link" Content="7. Common error messages" Click="GoToSection7"/>
                     <Button Classes="link" Content="8. Under the hood: packages, pipeline, and algorithms" Click="GoToSection8"/>
-                    <Button Classes="link" Content="9. References" Click="GoToSection9"/>
+                    <Button Classes="link" Content="9. Headless / command-line mode" Click="GoToSection9"/>
+                    <Button Classes="link" Content="10. References" Click="GoToSection10"/>
                 </StackPanel>
 
                 <TextBlock x:Name="Section1" Classes="h2" Text="1. Solving a single image" Margin="0,16,0,0"/>
@@ -103,7 +104,14 @@
                 <TextBlock TextWrapping="Wrap"
                            Text="The right star-detection FWHM and how many stars to feed the matcher aren't known in advance, so StarFix tries several of each — and races those combinations concurrently (separate processes) rather than one at a time. Within a same-target batch, each file after the first also tries a shortcut first, reusing the previous file's already-solved position, rotation, and parity, before falling back to the full search if that doesn't check out (see section 3)."/>
 
-                <TextBlock x:Name="Section9" Classes="h2" Text="9. References" Margin="0,16,0,0"/>
+                <TextBlock x:Name="Section9" Classes="h2" Text="9. Headless / command-line mode" Margin="0,16,0,0"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="StarFix.exe can be called from another app or script without ever showing its window:"/>
+                <TextBlock TextWrapping="Wrap" FontFamily="Consolas,Courier New,monospace"
+                           Text="StarFix.exe --solve &lt;file&gt; [--ra &lt;deg&gt;] [--dec &lt;deg&gt;] [-r &lt;radius&gt;] [--json]"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="It uses your existing Settings (Gaia catalog path, overwrite-vs-new-file mode) exactly as the GUI does, and the result is added to Results history — a headless solve looks the same afterward as one you ran by hand, it just never showed a window while doing it. RA/Dec fall back to the file's own header if omitted, same as single-file Solve. The process exits with code 0 on a successful solve, 1 on a failed solve, or 2 if the arguments were invalid — with --json, a single JSON line is printed to stdout with the same fields solve.exe's own --json output has."/>
+                <TextBlock x:Name="Section10" Classes="h2" Text="10. References" Margin="0,16,0,0"/>
                 <TextBlock TextWrapping="Wrap" Text="[1] Astropy Collaboration, Price-Whelan, A. M., et al. 2022, &quot;The Astropy Project: Sustaining and Growing a Community-oriented Open-source Project and the Latest Major Release (v5.0),&quot; The Astrophysical Journal, 935, 167."/>
                 <TextBlock TextWrapping="Wrap" Text="[2] Bradley, L., Sipőcz, B., Robitaille, T., et al., &quot;astropy/photutils&quot; (Zenodo). See photutils.readthedocs.io for the current citation record."/>
                 <TextBlock TextWrapping="Wrap" Text="[3] Beroiz, M., Cabral, J. B., &amp; Sanchez, B. 2020, &quot;Astroalign: A Python module for astronomical image registration,&quot; Astronomy and Computing, 32, 100384."/>

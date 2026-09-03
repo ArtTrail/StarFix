@@ -19,6 +19,7 @@
             <TextBlock TextWrapping="Wrap" Text="• New: both single-file Solve and Batch Solve check for already-solved files before running and ask to cancel or continue anyway, instead of silently re-solving them."/>
             <TextBlock TextWrapping="Wrap" Text="• New: a proper Windows installer (Start Menu + optional desktop shortcut, clean uninstall) alongside the existing portable zip — installs per-user, no admin rights needed."/>
             <TextBlock TextWrapping="Wrap" Text="• New: StarFix checks for new releases on startup and via Help → Check for Updates. Finding one offers to download and install it directly — the app closes itself so the update installer can replace its files, then reopens once done. No separate uninstall step; upgrades happen in place."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: headless / command-line mode (StarFix.exe --solve &lt;file&gt; ...) — lets another app or script trigger a solve without the GUI ever appearing, using your existing Settings and adding the result to Results history same as a normal solve."/>
 
         </StackPanel>
     </ScrollViewer>
