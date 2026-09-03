@@ -15,9 +15,10 @@
                     <Button Classes="link" Content="3. Batch solving" Click="GoToSection3"/>
                     <Button Classes="link" Content="4. Results and summaries" Click="GoToSection4"/>
                     <Button Classes="link" Content="5. The Gaia catalog" Click="GoToSection5"/>
-                    <Button Classes="link" Content="6. Common error messages" Click="GoToSection6"/>
-                    <Button Classes="link" Content="7. Under the hood: packages, pipeline, and algorithms" Click="GoToSection7"/>
-                    <Button Classes="link" Content="8. References" Click="GoToSection8"/>
+                    <Button Classes="link" Content="6. Keeping StarFix up to date" Click="GoToSection6"/>
+                    <Button Classes="link" Content="7. Common error messages" Click="GoToSection7"/>
+                    <Button Classes="link" Content="8. Under the hood: packages, pipeline, and algorithms" Click="GoToSection8"/>
+                    <Button Classes="link" Content="9. References" Click="GoToSection9"/>
                 </StackPanel>
 
                 <TextBlock x:Name="Section1" Classes="h2" Text="1. Solving a single image" Margin="0,16,0,0"/>
@@ -44,7 +45,11 @@
                 <TextBlock TextWrapping="Wrap"
                            Text="StarFix solves against a local, offline copy of the Gaia DR3 catalog (down to magnitude 17) — no internet connection is needed once it's installed. Use Tools → Download Gaia Catalog the first time you run StarFix; it's about 4.2 GB and only needs to be downloaded once."/>
 
-                <TextBlock x:Name="Section6" Classes="h2" Text="6. Common error messages" Margin="0,16,0,0"/>
+                <TextBlock x:Name="Section6" Classes="h2" Text="6. Keeping StarFix up to date" Margin="0,16,0,0"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="StarFix checks GitHub for a newer release automatically on startup, and any time via Help → Check for Updates. If one's found, a banner offers to download and install it. Accepting downloads the new installer, then StarFix closes itself (it has to — Windows won't let an installer overwrite files a running program still has open) and hands off to the installer, which shows its normal setup wizard and upgrades the existing install in place. There's no separate uninstall step and your settings, results history, logs, and downloaded Gaia catalog are untouched either way, the same as manually running a new installer over an old install."/>
+
+                <TextBlock x:Name="Section7" Classes="h2" Text="7. Common error messages" Margin="0,16,0,0"/>
                 <TextBlock TextWrapping="Wrap"
                            Text="A failed solve shows the exact error from the solver. Most of these point to something about the frame itself, not a bug — here's what each one usually means:"/>
 
@@ -80,7 +85,7 @@
                 <TextBlock TextWrapping="Wrap"
                            Text="These indicate the solver itself crashed or hit an unexpected internal error — they're not data-quality messages. If you see one of these, it's worth reporting along with the file that triggered it."/>
 
-                <TextBlock x:Name="Section7" Classes="h2" Text="7. Under the hood: packages, pipeline, and algorithms" Margin="0,16,0,0"/>
+                <TextBlock x:Name="Section8" Classes="h2" Text="8. Under the hood: packages, pipeline, and algorithms" Margin="0,16,0,0"/>
                 <TextBlock TextWrapping="Wrap"
                            Text="StarFix's solver is a Python program (packaged as a standalone solve.exe via PyInstaller, bundled inside PySolver\solve\ — no separate Python install is needed to run StarFix). It's built on a handful of open-source scientific Python packages: astropy [1] (FITS I/O, WCS, sky coordinates, time/epoch handling, image statistics), photutils [2] (star detection), astroalign [3] (geometric star-pattern matching), astropy_healpix (spatial indexing for the local Gaia catalog, using the HEALPix scheme [6]), scipy [8] (nearest-neighbor lookups), and numpy [9] throughout."/>
 
@@ -98,7 +103,7 @@
                 <TextBlock TextWrapping="Wrap"
                            Text="The right star-detection FWHM and how many stars to feed the matcher aren't known in advance, so StarFix tries several of each — and races those combinations concurrently (separate processes) rather than one at a time. Within a same-target batch, each file after the first also tries a shortcut first, reusing the previous file's already-solved position, rotation, and parity, before falling back to the full search if that doesn't check out (see section 3)."/>
 
-                <TextBlock x:Name="Section8" Classes="h2" Text="8. References" Margin="0,16,0,0"/>
+                <TextBlock x:Name="Section9" Classes="h2" Text="9. References" Margin="0,16,0,0"/>
                 <TextBlock TextWrapping="Wrap" Text="[1] Astropy Collaboration, Price-Whelan, A. M., et al. 2022, &quot;The Astropy Project: Sustaining and Growing a Community-oriented Open-source Project and the Latest Major Release (v5.0),&quot; The Astrophysical Journal, 935, 167."/>
                 <TextBlock TextWrapping="Wrap" Text="[2] Bradley, L., Sipőcz, B., Robitaille, T., et al., &quot;astropy/photutils&quot; (Zenodo). See photutils.readthedocs.io for the current citation record."/>
                 <TextBlock TextWrapping="Wrap" Text="[3] Beroiz, M., Cabral, J. B., &amp; Sanchez, B. 2020, &quot;Astroalign: A Python module for astronomical image registration,&quot; Astronomy and Computing, 32, 100384."/>

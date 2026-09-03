@@ -1,9 +1,12 @@
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using StarFix.Services;
 using StarFix.ViewModels;
 using StarFix.Views;
 
@@ -24,10 +27,31 @@ public partial class MainWindow : Window
             Vm.Solve.OnBatchSolveRequested = OpenBatchSolveWindow;
             Vm.Solve.ConfirmAlreadySolvedFunc = () => ConfirmDialog.ShowAsync(this, "Already Solved",
                 "This file already appears solved. Continue anyway (it'll be re-solved), or cancel?");
+            Vm.LaunchInstallerAndExit = LaunchInstallerAndExit;
+            _ = Vm.RunStartupUpdateCheckAsync();
         };
     }
 
     private MainWindowViewModel Vm => (MainWindowViewModel)DataContext!;
+
+    /// <summary>Starts the downloaded installer, then shuts the app down so the installer can
+    /// overwrite files StarFix currently has open — it can't do that while they're locked.
+    /// Inno Setup's own upgrade handling (fixed AppId, see installer\StarFix.iss) takes it
+    /// from there: an in-place upgrade over the existing per-user install, no separate
+    /// uninstall step.</summary>
+    private void LaunchInstallerAndExit(string installerPath)
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo(installerPath) { UseShellExecute = true });
+        }
+        catch (Exception ex)
+        {
+            SessionLogService.Write($"[Update] Failed to launch installer: {ex}");
+            return;
+        }
+        (Avalonia.Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
+    }
 
     private void OpenBatchSolveWindow()
     {

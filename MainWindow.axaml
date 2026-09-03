@@ -29,6 +29,8 @@
                           Click="OnUserGuideClick"/>
                 <MenuItem Header="Revision History"
                           Click="OnRevisionHistoryClick"/>
+                <MenuItem Header="Check for Updates"
+                          Command="{Binding CheckForUpdatesCommand}"/>
                 <Separator/>
                 <MenuItem Header="About StarFix"
                           Click="OnAboutClick"/>
@@ -44,6 +46,35 @@
                     <TextBlock Classes="hint" Text="Plate solving via Gaia DR3 + astroalign"/>
                 </StackPanel>
             </StackPanel>
+        </Border>
+
+        <!-- ── Update available banner ─────────────────────────────────────── -->
+        <Border DockPanel.Dock="Top" Padding="16,10,16,10" Background="{StaticResource BrushBg2}"
+                IsVisible="{Binding IsUpdateAvailable}">
+            <Grid ColumnDefinitions="*,Auto,Auto">
+                <TextBlock Grid.Column="0" Text="{Binding UpdateVersionText}" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" Classes="primary" Content="Download &amp; Install"
+                        Command="{Binding DownloadAndInstallUpdateCommand}" Margin="0,0,8,0"/>
+                <Button Grid.Column="2" Classes="toolbar" Content="Later" Command="{Binding SkipUpdateCommand}"/>
+            </Grid>
+        </Border>
+
+        <!-- ── Update downloading banner ───────────────────────────────────── -->
+        <Border DockPanel.Dock="Top" Padding="16,10,16,10" Background="{StaticResource BrushBg2}"
+                IsVisible="{Binding IsUpdateDownloading}">
+            <StackPanel Spacing="6">
+                <TextBlock Text="{Binding UpdateStatusText}"/>
+                <ProgressBar Value="{Binding UpdateProgress}" Minimum="0" Maximum="100" Height="6"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ── Update status message (up to date / download failed) ───────── -->
+        <Border DockPanel.Dock="Top" Padding="16,10,16,10" Background="{StaticResource BrushBg2}"
+                IsVisible="{Binding IsUpdateMessageVisible}">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="{Binding UpdateStatusText}" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" Classes="toolbar" Content="OK" Command="{Binding DismissUpdateMessageCommand}"/>
+            </Grid>
         </Border>
 
         <!-- ── Separator ────────────────────────────────────────────────── -->
