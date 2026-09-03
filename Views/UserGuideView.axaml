@@ -25,6 +25,8 @@
                 <TextBlock x:Name="Section1" Classes="h2" Text="1. Solving a single image" Margin="0,16,0,0"/>
                 <TextBlock TextWrapping="Wrap"
                            Text="Click Browse and choose a FITS file. If the file's header already has RA/DEC keywords, they're filled in automatically as the search hint — edit them if you know a better position. Set the search radius to comfortably cover your position uncertainty plus the image's own field of view, then click Solve."/>
+                <TextBlock TextWrapping="Wrap"
+                           Text=".fits, .fit, .fts, and .fz (Rice/GZIP tile-compressed) files are all supported — a compressed file's WCS is written into its actual image extension, not the empty shell in front of it, so tools reading it back find it in the same place they would for an uncompressed file."/>
 
                 <TextBlock x:Name="Section2" Classes="h2" Text="2. Overwrite vs. new file" Margin="0,16,0,0"/>
                 <TextBlock TextWrapping="Wrap"

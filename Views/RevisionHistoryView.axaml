@@ -23,6 +23,7 @@
             <TextBlock TextWrapping="Wrap" Text="• New: StarFix checks for new releases on startup and via Help → Check for Updates. Finding one offers to download and install it directly — the app closes itself so the update installer can replace its files, then reopens once done. No separate uninstall step; upgrades happen in place."/>
             <TextBlock TextWrapping="Wrap" Text="• New: headless / command-line mode (StarFix.exe --solve &lt;file&gt; ...) — lets another app or script trigger a solve without the GUI ever appearing, using your existing Settings and adding the result to Results history same as a normal solve."/>
             <TextBlock TextWrapping="Wrap" Text="• New: author email and GitHub repo link added to the About page."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: .fz (Rice/GZIP tile-compressed) FITS files can now be solved, in both the GUI and headless mode. Also fixes a real bug this uncovered: the WCS/solved-flag was being written into a compressed file's empty primary shell instead of its actual image extension, where nothing would ever find it again."/>
 
         </StackPanel>
     </ScrollViewer>

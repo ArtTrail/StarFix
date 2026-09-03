@@ -24,7 +24,7 @@ public partial class SolveView : UserControl
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>
             {
-                new("FITS files") { Patterns = ["*.fits", "*.fit", "*.fts"] },
+                new("FITS files") { Patterns = ["*.fits", "*.fit", "*.fts", "*.fz"] },
                 new("All files")  { Patterns = ["*"] },
             }
         });

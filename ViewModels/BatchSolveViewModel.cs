@@ -64,11 +64,12 @@ public partial class BatchSolveViewModel : ViewModelBase
         // the list here (a folder that's entirely already solved) meant Start's "Add at least
         // one file first" fired before its already-solved popup ever got a chance to.
         var alreadySolvedPattern = new System.Text.RegularExpressions.Regex(
-            @"_solved_\d+\.(fits|fit|fts)$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            @"_solved_\d+\.(fits|fit|fts|fz)$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
         var files = System.IO.Directory.GetFiles(dir, "*.fits")
             .Concat(System.IO.Directory.GetFiles(dir, "*.fit"))
             .Concat(System.IO.Directory.GetFiles(dir, "*.fts"))
+            .Concat(System.IO.Directory.GetFiles(dir, "*.fz"))
             .Where(f => !alreadySolvedPattern.IsMatch(System.IO.Path.GetFileName(f)))
             .OrderBy(f => f, StringComparer.OrdinalIgnoreCase)
             .ToList();

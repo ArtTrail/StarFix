@@ -63,6 +63,25 @@ public static class FitsHeaderService
     {
         using var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
         var kv = ReadHeaderBlock(fs);
+
+        // A .fz (Rice/GZIP tile-compressed) file's primary HDU is just an empty shell
+        // (NAXIS=0, EXTEND=T) — the real header lives on the next HDU instead, and RA/DEC/
+        // PLTSOLVD (the only keywords this service is ever asked for) pass through
+        // unchanged there since fpack only renames the handful of names that collide with
+        // its own bookkeeping (NAXIS, BITPIX, etc. become ZNAXIS, ZBITPIX). ReadHeaderBlock
+        // always consumes a whole, 2880-byte-aligned block per call, so calling it again
+        // immediately correctly starts at the next HDU's header with no extra seeking.
+        if (kv.TryGetValue("NAXIS", out var naxis) && naxis == "0" &&
+            kv.TryGetValue("EXTEND", out var ext) && ext == "T")
+        {
+            var extKv = ReadHeaderBlock(fs);
+            if (extKv.TryGetValue("XTENSION", out var xt) && xt.Trim() == "BINTABLE" &&
+                extKv.TryGetValue("ZIMAGE", out var zi) && zi.Trim() == "T")
+            {
+                kv = extKv;
+            }
+        }
+
         return new FitsHeader(kv);
     }
 }
