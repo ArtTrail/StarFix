@@ -25,7 +25,7 @@ public static class BugReportService
 
     // Fine-grained PAT "StarFix Bug Report (Issues only)" — Issues: Read & Write on the
     // StarFix repo only.
-    private const string Token = "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";
+    private const string Token = "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";
 
     private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(20) };
 
