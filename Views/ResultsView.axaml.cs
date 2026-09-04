@@ -46,6 +46,7 @@ public partial class ResultsView : UserControl
             FileTypeChoices = new List<FilePickerFileType>
             {
                 new("Text files") { Patterns = ["*.txt"] },
+                new("CSV files")  { Patterns = ["*.csv"] },
                 new("All files")  { Patterns = ["*"] },
             }
         });

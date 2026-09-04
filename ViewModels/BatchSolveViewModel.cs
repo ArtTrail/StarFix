@@ -122,10 +122,12 @@ public partial class BatchSolveViewModel : ViewModelBase
 
         try
         {
-            await BatchSolveService.RunAsync(
+            var summary = await BatchSolveService.RunAsync(
                 paths, RadiusDeg, _cfg.OverwriteExisting,
                 catalogDir, progress, OnResult, _cts.Token);
-            Status = $"Batch finished — {paths.Count} file(s) processed.";
+            var meanRmsText = summary.MeanRmsPixels.HasValue ? $", mean RMS {summary.MeanRmsPixels:F2}px" : "";
+            Status = $"Batch finished — {summary.Solved} solved, {summary.Failed} failed, " +
+                     $"{summary.Skipped} already solved (skipped){meanRmsText}.";
         }
         catch (OperationCanceledException)
         {

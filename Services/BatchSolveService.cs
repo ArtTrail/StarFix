@@ -22,9 +22,11 @@ namespace StarFix.Services;
 /// slower, not faster. Only the persistent-process change remains, since it has no equivalent
 /// downside: it can only save time (skipping process/catalog reload) or be neutral, never cost
 /// more than the one-shot-per-file approach did.</summary>
+public record BatchSolveSummary(int Solved, int Failed, int Skipped, double? MeanRmsPixels);
+
 public static class BatchSolveService
 {
-    public static async Task RunAsync(
+    public static async Task<BatchSolveSummary> RunAsync(
         IReadOnlyList<string> filePaths, double radiusDeg, bool overwriteExisting,
         string? catalogDir, IProgress<string> progress, Action<SolveOutcome>? onResult, CancellationToken ct)
     {
@@ -32,6 +34,7 @@ public static class BatchSolveService
         session.Start(catalogDir);
 
         int solved = 0, failed = 0, skipped = 0;
+        double rmsSum = 0;
 
         try
         {
@@ -71,6 +74,7 @@ public static class BatchSolveService
                 if (outcome.Success)
                 {
                     solved++;
+                    rmsSum += outcome.Result?.RmsPixels ?? 0;
                     progress.Report($"  ✓  {name} — {outcome.Result?.NumMatched}/{outcome.Result?.NumDetected} matched, " +
                                      $"RMS {outcome.Result?.RmsPixels:F2}px");
                 }
@@ -88,6 +92,9 @@ public static class BatchSolveService
             await session.StopAsync();
         }
 
-        progress.Report($"Batch complete — {solved} solved, {failed} failed, {skipped} already solved (skipped).");
+        double? meanRms = solved > 0 ? rmsSum / solved : null;
+        var meanRmsText = meanRms.HasValue ? $", mean RMS {meanRms:F2}px" : "";
+        progress.Report($"Batch complete — {solved} solved, {failed} failed, {skipped} already solved (skipped){meanRmsText}.");
+        return new BatchSolveSummary(solved, failed, skipped, meanRms);
     }
 }

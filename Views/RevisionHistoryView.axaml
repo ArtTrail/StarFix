@@ -24,6 +24,9 @@
             <TextBlock TextWrapping="Wrap" Text="• New: headless / command-line mode (StarFix.exe --solve &lt;file&gt; ...) — lets another app or script trigger a solve without the GUI ever appearing, using your existing Settings and adding the result to Results history same as a normal solve."/>
             <TextBlock TextWrapping="Wrap" Text="• New: author email and GitHub repo link added to the About page."/>
             <TextBlock TextWrapping="Wrap" Text="• New: .fz (Rice/GZIP tile-compressed) FITS files can now be solved, in both the GUI and headless mode. Also fixes a real bug this uncovered: the WCS/solved-flag was being written into a compressed file's empty primary shell instead of its actual image extension, where nothing would ever find it again."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: Results panel Save can now export CSV (numeric fields — RMS, pixel scale, rotation, etc. — one row per solve) alongside the existing plain-text format."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: Batch Solve's completion message now includes mean RMS across the batch, not just the solved/failed/skipped counts."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: ASTAP-compatible mode (StarFix.exe --astap-compat) lets third-party software that hardcodes calls to astap_cli (N.I.N.A. and similar) use StarFix as a drop-in replacement — accepts ASTAP's own flags and unit conventions and writes the same .ini sidecar file ASTAP does."/>
 
         </StackPanel>
     </ScrollViewer>

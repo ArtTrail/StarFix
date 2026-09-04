@@ -70,17 +70,72 @@ public partial class ResultsViewModel : ViewModelBase
 
         try
         {
-            using var writer = new StreamWriter(path);
-            foreach (var entry in Entries)
-            {
-                writer.WriteLine($"{entry.FileName}  ({entry.TimestampText})");
-                writer.WriteLine(entry.Success ? entry.Result?.Text ?? "" : $"FAILED — {entry.ErrorMessage}");
-                writer.WriteLine();
-            }
+            if (Path.GetExtension(path).Equals(".csv", StringComparison.OrdinalIgnoreCase))
+                SaveCsv(path);
+            else
+                SaveText(path);
         }
         catch (Exception ex)
         {
             SessionLogService.Write($"[Results] Save failed: {ex.Message}");
         }
     }
+
+    private void SaveText(string path)
+    {
+        using var writer = new StreamWriter(path);
+        foreach (var entry in Entries)
+        {
+            writer.WriteLine($"{entry.FileName}  ({entry.TimestampText})");
+            writer.WriteLine(entry.Success ? entry.Result?.Text ?? "" : $"FAILED — {entry.ErrorMessage}");
+            writer.WriteLine();
+        }
+    }
+
+    /// <summary>The numeric fields (RMS, pixel scale, rotation, ...) are exactly the kind of
+    /// thing worth charting across a session — did tracking or focus drift over the night —
+    /// which a wall of card text can't offer. One row per solve, newest first, same order as
+    /// the panel itself.</summary>
+    private void SaveCsv(string path)
+    {
+        using var writer = new StreamWriter(path);
+        writer.WriteLine(string.Join(',', new[]
+        {
+            "FileName", "Timestamp", "Success", "ErrorMessage",
+            "CenterRaDeg", "CenterDecDeg", "PixelScaleArcsec", "RotationDeg", "Parity",
+            "FovWidthArcmin", "FovHeightArcmin",
+            "NumDetected", "NumCatalog", "NumMatched", "RmsPixels", "RmsArcsec",
+        }));
+
+        var ic = System.Globalization.CultureInfo.InvariantCulture;
+        foreach (var entry in Entries)
+        {
+            var s = entry.Result?.Summary;
+            var fields = new[]
+            {
+                entry.FileName,
+                entry.CompletedAt.ToString("yyyy-MM-dd HH:mm:ss", ic),
+                entry.Success.ToString(),
+                entry.ErrorMessage ?? "",
+                s?.CenterRaDeg.ToString(ic) ?? "",
+                s?.CenterDecDeg.ToString(ic) ?? "",
+                s?.PixelScaleArcsec.ToString(ic) ?? "",
+                s?.RotationDeg.ToString(ic) ?? "",
+                s?.Parity ?? "",
+                s?.FovWidthArcmin.ToString(ic) ?? "",
+                s?.FovHeightArcmin.ToString(ic) ?? "",
+                entry.Result?.NumDetected.ToString(ic) ?? "",
+                entry.Result?.NumCatalog.ToString(ic) ?? "",
+                entry.Result?.NumMatched.ToString(ic) ?? "",
+                entry.Result?.RmsPixels.ToString(ic) ?? "",
+                s?.RmsArcsec.ToString(ic) ?? "",
+            };
+            writer.WriteLine(string.Join(',', Array.ConvertAll(fields, CsvEscape)));
+        }
+    }
+
+    private static string CsvEscape(string field) =>
+        field.IndexOfAny([',', '"', '\n', '\r']) >= 0
+            ? "\"" + field.Replace("\"", "\"\"") + "\""
+            : field;
 }

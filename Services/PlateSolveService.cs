@@ -52,9 +52,24 @@ public static class PlateSolveService
         return newPath;
     }
 
+    public static Task<SolveOutcome> SolveOneAsync(
+        string sourcePath, double? ra, double? dec, double radiusDeg, bool overwriteExisting,
+        string? catalogDir, CancellationToken ct) =>
+        SolveOneAsync(sourcePath, ra, dec, radiusDeg, overwriteExisting, catalogDir, dryRun: false, applyWcsSuffix: true, ct);
+
+    /// <summary>dryRun solves and reports the result without writing anything back into the
+    /// file — used by astap-compat mode, which (matching ASTAP's own documented behavior)
+    /// only writes the WCS into the FITS file when its own -update flag is given.
+    ///
+    /// applyWcsSuffix controls StarFix's own "_WCS" filename marker (see
+    /// ApplyWcsSuffixIfNeeded) — astap-compat mode must pass false: real ASTAP's -update
+    /// updates a file in place under its original name, and a caller that hardcodes ASTAP's
+    /// CLI (the whole point of astap-compat mode) will look for that exact filename
+    /// afterward. Renaming it out from under that caller would silently break the very
+    /// compatibility this mode exists for.</summary>
     public static async Task<SolveOutcome> SolveOneAsync(
         string sourcePath, double? ra, double? dec, double radiusDeg, bool overwriteExisting,
-        string? catalogDir, CancellationToken ct)
+        string? catalogDir, bool dryRun, bool applyWcsSuffix, CancellationToken ct)
     {
         var targetPath = ResolveTargetPath(sourcePath, overwriteExisting);
 
@@ -90,6 +105,8 @@ public static class PlateSolveService
         psi.ArgumentList.Add("-r");
         psi.ArgumentList.Add(radiusDeg.ToString("F4", CultureInfo.InvariantCulture));
         psi.ArgumentList.Add("--json");
+        if (dryRun)
+            psi.ArgumentList.Add("--dry-run");
 
         if (!string.IsNullOrWhiteSpace(catalogDir))
             psi.EnvironmentVariables["STARFIX_GAIA_CATALOG_DIR"] = catalogDir;
@@ -134,7 +151,8 @@ public static class PlateSolveService
             };
         }
 
-        targetPath = ApplyWcsSuffixIfNeeded(targetPath, overwriteExisting);
+        if (!dryRun && applyWcsSuffix)
+            targetPath = ApplyWcsSuffixIfNeeded(targetPath, overwriteExisting);
 
         SessionLogService.Write($"[PlateSolve] OK — {Path.GetFileName(targetPath)} — " +
             $"{result?.NumMatched}/{result?.NumDetected} matched, RMS {result?.RmsPixels:F2}px");
