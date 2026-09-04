@@ -26,7 +26,7 @@ StarFix's solver detects stars in the image (photutils' DAOStarFinder), queries 
 
 ## Requirements
 
-- Windows or macOS (Apple Silicon) — the app targets .NET 8 / Avalonia, with a platform-native solver bundled for each
+- Windows, macOS (Apple Silicon), or Linux (x64) — the app targets .NET 8 / Avalonia, with a platform-native solver bundled for each
 - The Gaia DR3 catalog (~4.2 GB), downloaded once via Tools → Download Gaia Catalog
 
 ## Installation
@@ -36,6 +36,7 @@ Download the latest release from the [Releases](../../releases) page — with th
 - **`StarFix-Setup-vX.Y.Z.exe`** (Windows) — a proper installer (Start Menu shortcut, optional desktop shortcut, clean uninstall). Installs per-user, no admin rights needed.
 - **`StarFix-vX.Y.Z-win-x64.zip`** (Windows) — a portable, self-contained build. Unzip and run `StarFix.exe` directly, no install step.
 - **`StarFix-vX.Y.Z-osx-arm64.dmg`** (macOS, Apple Silicon) — open the DMG, drag StarFix into Applications. Not notarized, so the first launch needs right-click → Open → Open in the security dialog. Intel Mac (`osx-x64`) is not yet available.
+- **`StarFix-vX.Y.Z-linux-x64.tar.gz`** (Linux, x64) — extract, `chmod +x StarFix` if needed, and run `./StarFix`. Built on Debian 11 for broad glibc compatibility.
 
 ## Building from source
 
