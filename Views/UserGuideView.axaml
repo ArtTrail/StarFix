@@ -3,8 +3,13 @@
              x:Class="StarFix.Views.UserGuideView">
 
     <Grid>
-        <ScrollViewer x:Name="MainScrollViewer" Padding="24,20" VerticalScrollBarVisibility="Auto">
-            <StackPanel x:Name="ContentPanel" Spacing="10" MaxWidth="820">
+        <DockPanel>
+
+            <!-- Fixed header: title + search stay in view while the guide scrolls beneath
+                 them, so Find Next remains reachable after jumping to a match anywhere in
+                 the document instead of scrolling itself out of view along with everything
+                 else. -->
+            <StackPanel DockPanel.Dock="Top" MaxWidth="820" Margin="24,20,24,0">
 
                 <TextBlock Classes="title" Text="StarFix User Guide"/>
 
@@ -12,7 +17,7 @@
                 <Border Background="{StaticResource BrushBg2}"
                         CornerRadius="4"
                         Padding="10,8"
-                        Margin="0,8,0,4">
+                        Margin="0,8,0,0">
                     <DockPanel>
                         <TextBlock x:Name="SearchStatus"
                                    DockPanel.Dock="Right"
@@ -31,7 +36,12 @@
                     </DockPanel>
                 </Border>
 
-                <TextBlock Classes="h2" Text="Contents" Margin="0,16,0,0"/>
+            </StackPanel>
+
+        <ScrollViewer x:Name="MainScrollViewer" Padding="24,12,24,20" VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="ContentPanel" Spacing="10" MaxWidth="820">
+
+                <TextBlock Classes="h2" Text="Contents" Margin="0,4,0,0"/>
                 <StackPanel Spacing="6" Margin="8,0,0,0">
                     <Button Classes="link" Content="1. Solving a single image" Click="GoToSection1"/>
                     <Button Classes="link" Content="2. Overwrite vs. new file" Click="GoToSection2"/>
@@ -180,6 +190,8 @@
 
             </StackPanel>
         </ScrollViewer>
+
+        </DockPanel>
 
         <Button Classes="fab" Content="&#x2191;" Click="OnBackToTopClick" ToolTip.Tip="Back to top"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,28,28"/>
