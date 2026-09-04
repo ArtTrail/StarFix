@@ -13,9 +13,7 @@ namespace StarFix.Services;
 /// </summary>
 public static class SessionLogService
 {
-    private static readonly string LogDir = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        "StarFix", "logs");
+    private static readonly string LogDir = Path.Combine(ConfigService.AppDataDir, "logs");
 
     private static string _logPath = "";
 

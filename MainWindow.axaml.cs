@@ -161,9 +161,7 @@ public partial class MainWindow : Window
 
     private async Task<string?> OpenPreviousLogAsync()
     {
-        var logsDir = System.IO.Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "StarFix", "logs");
+        var logsDir = System.IO.Path.Combine(ConfigService.AppDataDir, "logs");
 
         var results = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {

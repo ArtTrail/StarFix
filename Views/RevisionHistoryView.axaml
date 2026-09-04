@@ -7,6 +7,7 @@
 
             <TextBlock Classes="h2" Text="v1.1.1  —  2026-09-04"/>
             <TextBlock TextWrapping="Wrap" Text="• New: macOS (Apple Silicon) build — StarFix is now available for Mac."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: Linux (x64) build."/>
             <TextBlock TextWrapping="Wrap" Text="• New: Help → Submit Feedback opens a form (bug report or feature request) that creates a real GitHub Issue directly, no need to leave the app."/>
             <TextBlock TextWrapping="Wrap" Text="• New: the User Guide has a search box — find any topic instantly, Enter or Find Next to cycle through matches, with the matched text itself highlighted. The search bar stays pinned in view while the guide scrolls beneath it."/>
             <TextBlock TextWrapping="Wrap" Text="• New: a concrete example command line added under the --solve headless mode syntax in the User Guide."/>

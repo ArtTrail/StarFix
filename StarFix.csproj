@@ -8,6 +8,18 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
 
+  <!-- Linux-only: the .NET runtime needs libicu for globalization support, which minimal
+       Linux distros/images don't ship by default — confirmed directly, a fresh Debian slim
+       container aborted on startup with "Couldn't find a valid ICU package installed."
+       Rather than requiring every Linux user to install a system package first,
+       InvariantGlobalization removes that dependency entirely. Scoped to linux-x64 only —
+       StarFix already formats every number it cares about via CultureInfo.InvariantCulture
+       explicitly, so this shouldn't change Windows/Mac behavior at all, and there's no
+       reason to touch working platforms for a Linux-specific runtime requirement. -->
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
   <ItemGroup>
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
