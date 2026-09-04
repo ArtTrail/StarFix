@@ -127,6 +127,24 @@ public partial class MainWindow : Window
         win.Show(this);
     }
 
+    private void OnBugReportClick(object? sender, RoutedEventArgs e)
+    {
+        Window? win = null;
+        var bugVm = new BugReportViewModel();
+        bugVm.CloseCallback = () => win?.Close();
+
+        win = new Window
+        {
+            Title = "Submit Feedback",
+            Width = 560,
+            SizeToContent = SizeToContent.Height,
+            CanResize = false,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Content = new BugReportView { DataContext = bugVm },
+        };
+        win.Show(this);
+    }
+
     private void OnAboutClick(object? sender, RoutedEventArgs e)
     {
         var win = new Window

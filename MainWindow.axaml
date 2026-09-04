@@ -32,6 +32,9 @@
                 <MenuItem Header="Check for Updates"
                           Command="{Binding CheckForUpdatesCommand}"/>
                 <Separator/>
+                <MenuItem Header="Submit Feedback"
+                          Click="OnBugReportClick"/>
+                <Separator/>
                 <MenuItem Header="About StarFix"
                           Click="OnAboutClick"/>
             </MenuItem>
