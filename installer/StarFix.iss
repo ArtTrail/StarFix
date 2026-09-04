@@ -11,7 +11,7 @@
 ;   "C:\Users\<you>\AppData\Local\Programs\Inno Setup 6\ISCC.exe" StarFix.iss
 
 #define MyAppName "StarFix"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.1.0"
 #define MyAppPublisher "Art Trail"
 #define MyAppURL "https://github.com/ArtTrail/StarFix"
 #define MyAppExeName "StarFix.exe"
