@@ -130,7 +130,8 @@ public static class PlateSolveService
             SessionLogService.Write($"[PlateSolve] FAILED — {Path.GetFileName(targetPath)} — {reason}");
             return new SolveOutcome
             {
-                SourcePath = sourcePath, SolvedPath = targetPath, Success = false, ErrorMessage = reason,
+                SourcePath = sourcePath, SolvedPath = targetPath, Success = false,
+                ErrorMessage = SolveErrorMessageService.Humanize(reason),
             };
         }
 

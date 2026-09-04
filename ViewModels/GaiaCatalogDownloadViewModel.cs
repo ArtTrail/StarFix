@@ -65,6 +65,7 @@ public partial class GaiaCatalogDownloadViewModel : ViewModelBase
             foreach (var a in _assets) totalBytes += a.Size;
             var gb = totalBytes / 1_073_741_824.0;
 
+            HeadlineText = "Gaia catalog release found";
             ConfirmText = $"{_assets.Count} files, ~{gb:F1} GB. Download now?";
             SessionLogService.Write($"[GaiaCatalog] Release check OK — {_assets.Count} files, {gb:F2} GB listed.");
             IsProbing = false;
@@ -105,6 +106,7 @@ public partial class GaiaCatalogDownloadViewModel : ViewModelBase
     {
         IsConfirmVisible = false;
         IsDownloading = true;
+        HeadlineText = "Downloading Gaia catalog…";
         ProgressValue = 0;
         ProgressMax = _assets.Count;
         _cts = new CancellationTokenSource();
@@ -129,6 +131,9 @@ public partial class GaiaCatalogDownloadViewModel : ViewModelBase
         {
             var result = await GaiaCatalogService.DownloadAllAsync(_assets, destDir, progress, maxConcurrency: 8, _cts.Token);
 
+            HeadlineText = "Installing…";
+            StatusText = "Verifying downloaded files…";
+
             long totalBytesOnDisk = 0;
             foreach (var f in System.IO.Directory.GetFiles(destDir, "*.npz"))
                 totalBytesOnDisk += new System.IO.FileInfo(f).Length;
@@ -138,6 +143,7 @@ public partial class GaiaCatalogDownloadViewModel : ViewModelBase
             _cfg.GaiaCatalogBytesOnDisk = totalBytesOnDisk;
             ConfigService.Save(_cfg);
 
+            HeadlineText = "Gaia catalog installed";
             StatusText = $"Done — {_assets.Count} files, {totalBytesOnDisk / 1_073_741_824.0:F1} GB.";
 
             string throughputClause;
@@ -164,11 +170,13 @@ public partial class GaiaCatalogDownloadViewModel : ViewModelBase
         }
         catch (OperationCanceledException)
         {
+            HeadlineText = "Download cancelled";
             StatusText = "Cancelled.";
             SessionLogService.Write("[GaiaCatalog] Download cancelled by user.");
         }
         catch (Exception ex)
         {
+            HeadlineText = "Download failed";
             StatusText = $"Failed: {ex.Message}";
             SessionLogService.Write($"[GaiaCatalog] Download failed: {ex.GetType().Name} — {ex.Message}");
         }

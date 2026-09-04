@@ -101,7 +101,10 @@ public class BatchSolverSession : IDisposable
             {
                 var error = root.TryGetProperty("error", out var errProp) ? errProp.GetString() : "Unknown error";
                 SessionLogService.Write($"[BatchSolverSession] FAILED — {Path.GetFileName(targetPath)} — {error}");
-                return new SolveOutcome { SourcePath = sourcePath, SolvedPath = targetPath, Success = false, ErrorMessage = error };
+                return new SolveOutcome {
+                    SourcePath = sourcePath, SolvedPath = targetPath, Success = false,
+                    ErrorMessage = SolveErrorMessageService.Humanize(error ?? "Unknown error"),
+                };
             }
 
             var result = JsonSerializer.Deserialize<SolveResultJson>(responseLine);
