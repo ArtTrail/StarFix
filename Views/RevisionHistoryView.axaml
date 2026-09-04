@@ -5,7 +5,18 @@
     <ScrollViewer Padding="24,20">
         <StackPanel Spacing="6">
 
-            <TextBlock Classes="h2" Text="v1.0.0  —  2026-09-02"/>
+            <TextBlock Classes="h2" Text="v1.1.0  —  2026-09-03"/>
+            <TextBlock TextWrapping="Wrap" Text="• New: both single-file Solve and Batch Solve check for already-solved files before running and ask to cancel or continue anyway, instead of silently re-solving them."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: a proper Windows installer (Start Menu + optional desktop shortcut, clean uninstall) alongside the existing portable zip — installs per-user, no admin rights needed."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: StarFix checks for new releases on startup and via Help → Check for Updates. Finding one offers to download and install it directly — the app closes itself so the update installer can replace its files, then reopens once done. No separate uninstall step; upgrades happen in place."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: headless / command-line mode (StarFix.exe --solve &lt;file&gt; ...) — lets another app or script trigger a solve without the GUI ever appearing, using your existing Settings and adding the result to Results history same as a normal solve."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: author email and GitHub repo link added to the About page."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: .fz (Rice/GZIP tile-compressed) FITS files can now be solved, in both the GUI and headless mode. Also fixes a real bug this uncovered: the WCS/solved-flag was being written into a compressed file's empty primary shell instead of its actual image extension, where nothing would ever find it again."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: Results panel Save can now export CSV (numeric fields — RMS, pixel scale, rotation, etc. — one row per solve) alongside the existing plain-text format."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: Batch Solve's completion message now includes mean RMS across the batch, not just the solved/failed/skipped counts."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: ASTAP-compatible mode (StarFix.exe --astap-compat) lets capture software with built-in ASTAP support (N.I.N.A. and similar) use StarFix instead, by pointing its ASTAP executable setting at StarFix.exe — accepts ASTAP's own flags and unit conventions and writes the same .ini sidecar file ASTAP does. Full setup steps for N.I.N.A. in the User Guide, section 9."/>
+
+            <TextBlock Classes="h2" Text="v1.0.0  —  2026-09-02" Margin="0,18,0,0"/>
             <TextBlock TextWrapping="Wrap" Text="• New: first release — single-file and batch plate solving against the self-built, offline Gaia DR3 catalog."/>
             <TextBlock TextWrapping="Wrap" Text="• New: overwrite-existing vs. new-file output modes."/>
             <TextBlock TextWrapping="Wrap" Text="• New: live Results panel with the full per-solve summary, persisted across restarts, with Clear and Save."/>
@@ -16,17 +27,6 @@
             <TextBlock TextWrapping="Wrap" Text="• New: redesigned sextant logo and app icon; header logo doubled in size."/>
             <TextBlock TextWrapping="Wrap" Text="• Changed: Batch Solve button moved out of the Tools menu to sit directly in the Solve panel's header; ellipses removed from button labels."/>
             <TextBlock TextWrapping="Wrap" Text="• Removed: Batch Solve's &quot;Import from file&quot; (CSV/XLSX) file-list import — Add Folder and typing/pasting paths directly remain."/>
-
-            <TextBlock Classes="h2" Text="v1.1.0  —  2026-09-03" Margin="0,18,0,0"/>
-            <TextBlock TextWrapping="Wrap" Text="• New: both single-file Solve and Batch Solve check for already-solved files before running and ask to cancel or continue anyway, instead of silently re-solving them."/>
-            <TextBlock TextWrapping="Wrap" Text="• New: a proper Windows installer (Start Menu + optional desktop shortcut, clean uninstall) alongside the existing portable zip — installs per-user, no admin rights needed."/>
-            <TextBlock TextWrapping="Wrap" Text="• New: StarFix checks for new releases on startup and via Help → Check for Updates. Finding one offers to download and install it directly — the app closes itself so the update installer can replace its files, then reopens once done. No separate uninstall step; upgrades happen in place."/>
-            <TextBlock TextWrapping="Wrap" Text="• New: headless / command-line mode (StarFix.exe --solve &lt;file&gt; ...) — lets another app or script trigger a solve without the GUI ever appearing, using your existing Settings and adding the result to Results history same as a normal solve."/>
-            <TextBlock TextWrapping="Wrap" Text="• New: author email and GitHub repo link added to the About page."/>
-            <TextBlock TextWrapping="Wrap" Text="• New: .fz (Rice/GZIP tile-compressed) FITS files can now be solved, in both the GUI and headless mode. Also fixes a real bug this uncovered: the WCS/solved-flag was being written into a compressed file's empty primary shell instead of its actual image extension, where nothing would ever find it again."/>
-            <TextBlock TextWrapping="Wrap" Text="• New: Results panel Save can now export CSV (numeric fields — RMS, pixel scale, rotation, etc. — one row per solve) alongside the existing plain-text format."/>
-            <TextBlock TextWrapping="Wrap" Text="• New: Batch Solve's completion message now includes mean RMS across the batch, not just the solved/failed/skipped counts."/>
-            <TextBlock TextWrapping="Wrap" Text="• New: ASTAP-compatible mode (StarFix.exe --astap-compat) lets capture software with built-in ASTAP support (N.I.N.A. and similar) use StarFix instead, by pointing its ASTAP executable setting at StarFix.exe — accepts ASTAP's own flags and unit conventions and writes the same .ini sidecar file ASTAP does. Full setup steps for N.I.N.A. in the User Guide, section 9."/>
 
         </StackPanel>
     </ScrollViewer>

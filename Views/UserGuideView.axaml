@@ -4,9 +4,32 @@
 
     <Grid>
         <ScrollViewer x:Name="MainScrollViewer" Padding="24,20" VerticalScrollBarVisibility="Auto">
-            <StackPanel Spacing="10" MaxWidth="820">
+            <StackPanel x:Name="ContentPanel" Spacing="10" MaxWidth="820">
 
                 <TextBlock Classes="title" Text="StarFix User Guide"/>
+
+                <!-- ── Search ────────────────────────────────────────────────────── -->
+                <Border Background="{StaticResource BrushBg2}"
+                        CornerRadius="4"
+                        Padding="10,8"
+                        Margin="0,8,0,4">
+                    <DockPanel>
+                        <TextBlock x:Name="SearchStatus"
+                                   DockPanel.Dock="Right"
+                                   VerticalAlignment="Center"
+                                   Classes="hint"
+                                   Margin="10,0,0,0"/>
+                        <Button DockPanel.Dock="Right" Content="Clear"
+                                Click="SearchClear_Click"
+                                Padding="12,4" Margin="6,0,0,0"/>
+                        <Button DockPanel.Dock="Right" Content="Find Next"
+                                Click="FindNext_Click"
+                                Padding="12,4" Margin="6,0,0,0"/>
+                        <TextBox x:Name="SearchBox"
+                                 Watermark="Search guide…"
+                                 KeyDown="SearchBox_KeyDown"/>
+                    </DockPanel>
+                </Border>
 
                 <TextBlock Classes="h2" Text="Contents" Margin="0,16,0,0"/>
                 <StackPanel Spacing="6" Margin="8,0,0,0">

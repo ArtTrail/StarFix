@@ -1,14 +1,78 @@
+using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 
 namespace StarFix.Views;
 
 public partial class UserGuideView : UserControl
 {
+    private readonly List<TextBlock> _matches = new();
+    private int _matchIndex = -1;
+    private string _lastQuery = "";
+
     public UserGuideView()
     {
         InitializeComponent();
+    }
+
+    private void SearchBox_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+            RunFind();
+    }
+
+    private void FindNext_Click(object? sender, RoutedEventArgs e) => RunFind();
+
+    private void SearchClear_Click(object? sender, RoutedEventArgs e)
+    {
+        SearchBox.Text = "";
+        _matches.Clear();
+        _matchIndex = -1;
+        _lastQuery = "";
+        SearchStatus.Text = "";
+    }
+
+    private void RunFind()
+    {
+        var query = SearchBox.Text?.Trim() ?? "";
+        if (string.IsNullOrEmpty(query))
+        {
+            SearchStatus.Text = "";
+            return;
+        }
+
+        if (!query.Equals(_lastQuery, StringComparison.OrdinalIgnoreCase))
+        {
+            _matches.Clear();
+            _matchIndex = -1;
+            _lastQuery = query;
+            CollectMatches(ContentPanel, query, _matches);
+        }
+
+        if (_matches.Count == 0)
+        {
+            SearchStatus.Text = "No matches";
+            return;
+        }
+
+        _matchIndex = (_matchIndex + 1) % _matches.Count;
+        _matches[_matchIndex].BringIntoView();
+        SearchStatus.Text = $"{_matchIndex + 1} / {_matches.Count}";
+    }
+
+    private static void CollectMatches(ILogical parent, string query, List<TextBlock> results)
+    {
+        foreach (var child in parent.LogicalChildren)
+        {
+            if (child is TextBlock tb &&
+                tb.Text?.Contains(query, StringComparison.OrdinalIgnoreCase) == true)
+                results.Add(tb);
+            CollectMatches(child, query, results);
+        }
     }
 
     private void ScrollToSection(Control target)
