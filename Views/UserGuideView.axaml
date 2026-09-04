@@ -135,6 +135,12 @@
                 <TextBlock TextWrapping="Wrap" FontFamily="Consolas,Courier New,monospace"
                            Text="StarFix.exe --solve &lt;file&gt; [--ra &lt;deg&gt;] [--dec &lt;deg&gt;] [-r &lt;radius&gt;] [--json]"/>
                 <TextBlock TextWrapping="Wrap"
+                           Text="For example:"/>
+                <TextBlock TextWrapping="Wrap" FontFamily="Consolas,Courier New,monospace"
+                           Text="StarFix.exe --solve &quot;C:\Images\M42_001.fits&quot; --ra 150.0 --dec 20.0 -r 0.5 --json"/>
+                <TextBlock TextWrapping="Wrap"
+                           Text="(the same example target as the ASTAP-compat example below, just in StarFix's own degrees-for-both convention — RA 150.0°, Dec +20.0°, a 0.5° search radius. --ra/--dec are optional, same as the GUI: omit them and StarFix falls back to the file's own header.)"/>
+                <TextBlock TextWrapping="Wrap"
                            Text="It uses your existing Settings (Gaia catalog path, overwrite-vs-new-file mode) exactly as the GUI does, and the result is added to Results history — a headless solve looks the same afterward as one you ran by hand, it just never showed a window while doing it. RA/Dec fall back to the file's own header if omitted, same as single-file Solve. The process exits with code 0 on a successful solve, 1 on a failed solve, or 2 if the arguments were invalid — with --json, a single JSON line is printed to stdout with the same fields solve.exe's own --json output has."/>
 
                 <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="ASTAP-compatible mode — using StarFix from N.I.N.A."/>
