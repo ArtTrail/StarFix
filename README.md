@@ -10,8 +10,12 @@ Plate solving via Gaia DR3 + astroalign — a Windows desktop app that finds the
 - **Fast batch solving**: within a same-target batch, each file after the first tries a shortcut first (reusing the previous file's solved position, rotation, and parity) before falling back to a full geometric search — often near-instant after the first file. Every retry attempt also races several detection/match candidates concurrently instead of trying them one at a time.
 - **Overwrite or new-file output modes** — write the WCS into the original file (matching ASTAP's default behavior) or into a numbered copy, leaving the original untouched.
 - **Already-solved detection** — batch and single-file solving both check for files that appear already solved and ask before re-solving them.
-- **Live Results panel** with the full solve summary (center coordinates, pixel scale, field of view, rotation, matched star count, RMS residual), persisted across restarts.
+- **`.fz` (Rice/GZIP tile-compressed) FITS support**, in both the GUI and headless mode.
+- **Live Results panel** with the full solve summary (center coordinates, pixel scale, field of view, rotation, matched star count, RMS residual), persisted across restarts — exportable as plain text or CSV.
 - **Built-in Gaia catalog manager** with byte-exact integrity verification per downloaded file.
+- **Headless / command-line mode** (`StarFix.exe --solve <file> ...`) — lets another app or script trigger a solve without the GUI ever appearing.
+- **ASTAP-compatible mode** (`StarFix.exe --astap-compat`) — lets capture software with built-in ASTAP support (N.I.N.A. and similar) use StarFix instead, by pointing its ASTAP executable setting at StarFix.exe. Full setup steps in the in-app User Guide.
+- **Self-update checker** — checks GitHub releases on startup and via Help → Check for Updates.
 - **Diagnostics log, User Guide, and Revision History** built into the app.
 
 ![Batch Solve window](docs/screenshots/batch-solve.png)
