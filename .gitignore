@@ -23,3 +23,7 @@ sextant-logo-1024.png
 # OS cruft
 .DS_Store
 Thumbs.db
+
+# Wrangler's local cache (Cloudflare Workers CLI) — account metadata/build cache, not
+# source; real secrets are never written to disk here at all (set via `wrangler secret put`).
+CloudflareWorkers/**/.wrangler/
