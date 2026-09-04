@@ -5,7 +5,16 @@
     <ScrollViewer Padding="24,20">
         <StackPanel Spacing="6">
 
-            <TextBlock Classes="h2" Text="v1.1.0  —  2026-09-03"/>
+            <TextBlock Classes="h2" Text="v1.1.1  —  2026-09-04"/>
+            <TextBlock TextWrapping="Wrap" Text="• New: macOS (Apple Silicon) build — StarFix is now available for Mac."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: Help → Submit Feedback opens a form (bug report or feature request) that creates a real GitHub Issue directly, no need to leave the app."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: the User Guide has a search box — find any topic instantly, Enter or Find Next to cycle through matches, with the matched text itself highlighted. The search bar stays pinned in view while the guide scrolls beneath it."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: a concrete example command line added under the --solve headless mode syntax in the User Guide."/>
+            <TextBlock TextWrapping="Wrap" Text="• Changed: Revision History now lists the newest version first."/>
+            <TextBlock TextWrapping="Wrap" Text="• Fixed: a solve failing because the Gaia catalog isn't installed (or doesn't cover the position) now shows a plain, clear message instead of a raw Python traceback."/>
+            <TextBlock TextWrapping="Wrap" Text="• Fixed: the Gaia catalog download window now shows distinct status text for checking, downloading, installing, and done, instead of getting stuck on &quot;Checking...&quot; after the download had already finished."/>
+
+            <TextBlock Classes="h2" Text="v1.1.0  —  2026-09-03" Margin="0,18,0,0"/>
             <TextBlock TextWrapping="Wrap" Text="• New: both single-file Solve and Batch Solve check for already-solved files before running and ask to cancel or continue anyway, instead of silently re-solving them."/>
             <TextBlock TextWrapping="Wrap" Text="• New: a proper Windows installer (Start Menu + optional desktop shortcut, clean uninstall) alongside the existing portable zip — installs per-user, no admin rights needed."/>
             <TextBlock TextWrapping="Wrap" Text="• New: StarFix checks for new releases on startup and via Help → Check for Updates. Finding one offers to download and install it directly — the app closes itself so the update installer can replace its files, then reopens once done. No separate uninstall step; upgrades happen in place."/>
