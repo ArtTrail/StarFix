@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
@@ -12,6 +13,7 @@ namespace StarFix.Views;
 public partial class UserGuideView : UserControl
 {
     private readonly List<TextBlock> _matches = new();
+    private readonly Dictionary<TextBlock, string> _originalText = new();
     private int _matchIndex = -1;
     private string _lastQuery = "";
     private TextBlock? _highlightedBlock;
@@ -50,10 +52,11 @@ public partial class UserGuideView : UserControl
 
         if (!query.Equals(_lastQuery, StringComparison.OrdinalIgnoreCase))
         {
+            ClearHighlight();
             _matches.Clear();
             _matchIndex = -1;
             _lastQuery = query;
-            CollectMatches(ContentPanel, query, _matches);
+            CollectMatches(ContentPanel, query, _matches, _originalText);
         }
 
         if (_matches.Count == 0)
@@ -66,34 +69,67 @@ public partial class UserGuideView : UserControl
         _matchIndex = (_matchIndex + 1) % _matches.Count;
         var match = _matches[_matchIndex];
         match.BringIntoView();
-        ApplyHighlight(match);
+        ApplyHighlight(match, query);
         SearchStatus.Text = $"{_matchIndex + 1} / {_matches.Count}";
     }
 
-    private void ApplyHighlight(TextBlock block)
+    /// <summary>Highlights just the matched substring (the first occurrence within this
+    /// block, case-insensitive) rather than the whole paragraph — swaps the block's plain
+    /// Text for three Inlines/Run segments (before/match/after), since TextBlock.Text alone
+    /// has no way to color part of itself. Restoring Text (see ClearHighlight) collapses
+    /// Inlines back to a single plain Run.</summary>
+    private void ApplyHighlight(TextBlock block, string query)
     {
         ClearHighlight();
-        block.Background = this.TryFindResource("BrushWarn", out var warn) ? warn as IBrush : Brushes.Yellow;
-        block.Foreground = this.TryFindResource("BrushBg", out var bg) ? bg as IBrush : Brushes.Black;
+
+        var original = _originalText.TryGetValue(block, out var saved) ? saved : block.Text ?? "";
+        var index = original.IndexOf(query, StringComparison.OrdinalIgnoreCase);
+        if (index < 0)
+        {
+            _highlightedBlock = null;
+            return;
+        }
+
+        var before = original[..index];
+        var matched = original.Substring(index, query.Length);
+        var after = original[(index + query.Length)..];
+
+        var highlightBg = this.TryFindResource("BrushWarn", out var warn) ? warn as IBrush : Brushes.Yellow;
+        var highlightFg = this.TryFindResource("BrushBg", out var bg) ? bg as IBrush : Brushes.Black;
+
+        block.Inlines ??= new InlineCollection();
+        block.Inlines.Clear();
+        if (before.Length > 0) block.Inlines.Add(new Run(before));
+        block.Inlines.Add(new Run(matched) { Background = highlightBg, Foreground = highlightFg });
+        if (after.Length > 0) block.Inlines.Add(new Run(after));
+
         _highlightedBlock = block;
     }
 
     private void ClearHighlight()
     {
         if (_highlightedBlock is null) return;
-        _highlightedBlock.ClearValue(TextBlock.BackgroundProperty);
-        _highlightedBlock.ClearValue(TextBlock.ForegroundProperty);
+        // Inlines takes rendering precedence over Text when non-empty, so it must be
+        // explicitly cleared — just reassigning Text isn't guaranteed to revert it.
+        _highlightedBlock.Inlines?.Clear();
+        var original = _originalText.TryGetValue(_highlightedBlock, out var saved) ? saved : null;
+        if (original is not null)
+            _highlightedBlock.Text = original;
         _highlightedBlock = null;
     }
 
-    private static void CollectMatches(ILogical parent, string query, List<TextBlock> results)
+    private static void CollectMatches(
+        ILogical parent, string query, List<TextBlock> results, Dictionary<TextBlock, string> originalText)
     {
         foreach (var child in parent.LogicalChildren)
         {
             if (child is TextBlock tb &&
                 tb.Text?.Contains(query, StringComparison.OrdinalIgnoreCase) == true)
+            {
                 results.Add(tb);
-            CollectMatches(child, query, results);
+                originalText[tb] = tb.Text;
+            }
+            CollectMatches(child, query, results, originalText);
         }
     }
 
