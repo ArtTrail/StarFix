@@ -23,10 +23,9 @@ public static class BugReportService
     private const string RepoOwner = "ArtTrail";
     private const string RepoName  = "StarFix";
 
-    // Fine-grained PAT — Issues: Read & Write on the StarFix repo only.
-    // TODO: replace with a real token generated at github.com/settings/tokens?type=beta
-    // (Repository access: ArtTrail/StarFix only; Permissions: Issues = Read and write).
-    private const string Token = "REPLACE_WITH_REAL_FINE_GRAINED_PAT";
+    // Fine-grained PAT "StarFix Bug Report (Issues only)" — Issues: Read & Write on the
+    // StarFix repo only.
+    private const string Token = "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";
 
     private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(20) };
 
