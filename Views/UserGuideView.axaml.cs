@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
+using Avalonia.Media;
 
 namespace StarFix.Views;
 
@@ -13,6 +14,7 @@ public partial class UserGuideView : UserControl
     private readonly List<TextBlock> _matches = new();
     private int _matchIndex = -1;
     private string _lastQuery = "";
+    private TextBlock? _highlightedBlock;
 
     public UserGuideView()
     {
@@ -34,6 +36,7 @@ public partial class UserGuideView : UserControl
         _matchIndex = -1;
         _lastQuery = "";
         SearchStatus.Text = "";
+        ClearHighlight();
     }
 
     private void RunFind()
@@ -56,12 +59,31 @@ public partial class UserGuideView : UserControl
         if (_matches.Count == 0)
         {
             SearchStatus.Text = "No matches";
+            ClearHighlight();
             return;
         }
 
         _matchIndex = (_matchIndex + 1) % _matches.Count;
-        _matches[_matchIndex].BringIntoView();
+        var match = _matches[_matchIndex];
+        match.BringIntoView();
+        ApplyHighlight(match);
         SearchStatus.Text = $"{_matchIndex + 1} / {_matches.Count}";
+    }
+
+    private void ApplyHighlight(TextBlock block)
+    {
+        ClearHighlight();
+        block.Background = this.TryFindResource("BrushWarn", out var warn) ? warn as IBrush : Brushes.Yellow;
+        block.Foreground = this.TryFindResource("BrushBg", out var bg) ? bg as IBrush : Brushes.Black;
+        _highlightedBlock = block;
+    }
+
+    private void ClearHighlight()
+    {
+        if (_highlightedBlock is null) return;
+        _highlightedBlock.ClearValue(TextBlock.BackgroundProperty);
+        _highlightedBlock.ClearValue(TextBlock.ForegroundProperty);
+        _highlightedBlock = null;
     }
 
     private static void CollectMatches(ILogical parent, string query, List<TextBlock> results)
