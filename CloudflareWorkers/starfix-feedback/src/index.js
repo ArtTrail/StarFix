@@ -24,7 +24,7 @@
 // up its own Submit Feedback feature.
 
 const REPO_OWNER = "ArtTrail";
-const REPO_ALLOWLIST = ["StarFix"];
+const REPO_ALLOWLIST = ["StarFix", "TransitLab"];
 
 export default {
   async fetch(request, env) {
