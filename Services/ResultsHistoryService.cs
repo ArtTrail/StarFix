@@ -6,10 +6,10 @@ using StarFix.ViewModels;
 
 namespace StarFix.Services;
 
-/// <summary>Persists the Results panel's entries to disk so relaunching the app doesn't lose
-/// solve history — the in-memory-only ObservableCollection used to reset to empty on every
-/// restart, which looked like results were disappearing even though each individual solve had
-/// worked correctly.</summary>
+/// <summary>Persists the Results panel's entries to disk during a session (so the panel survives
+/// transient view/window rebuilds within a run). Per issue #8 the history is cleared on normal
+/// app exit (see App.axaml.cs), so a fresh launch starts with an empty panel rather than
+/// reloading the previous session's results.</summary>
 public static class ResultsHistoryService
 {
     private static readonly string Path_ = System.IO.Path.Combine(ConfigService.AppDataDir, "results_history.json");
@@ -30,6 +30,20 @@ public static class ResultsHistoryService
         {
             SessionLogService.Write($"[ResultsHistory] Load failed: {ex.Message}");
             return new List<SolveResultEntry>();
+        }
+    }
+
+    /// <summary>Removes the persisted history file (issue #8 — called on normal app exit so the
+    /// next launch starts empty). A missing file is already treated as empty by Load().</summary>
+    public static void Clear()
+    {
+        try
+        {
+            if (File.Exists(Path_)) File.Delete(Path_);
+        }
+        catch (Exception ex)
+        {
+            SessionLogService.Write($"[ResultsHistory] Clear failed: {ex.Message}");
         }
     }
 

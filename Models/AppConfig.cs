@@ -20,4 +20,11 @@ public class AppConfig
     public string GaiaCatalogPath      { get; set; } = "";
     public bool   GaiaCatalogInstalled { get; set; } = false;
     public long   GaiaCatalogBytesOnDisk { get; set; } = 0;
+
+    // Issue #13: total CPU budget for Batch Solve. This is the maximum number of concurrent
+    // match-worker processes across the whole batch, split between files solved in parallel and
+    // each solve's own internal candidate race, so the two can't jointly oversubscribe the CPU.
+    // 0 = auto (min(logical cores, 8)). Lower it on a low-RAM machine or for very large frames
+    // (each in-flight file loads its own catalog pixels + image into memory).
+    public int MaxWorkers { get; set; } = 0;
 }

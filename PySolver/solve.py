@@ -115,6 +115,26 @@ def find_transform_with_timeout(source, target, max_control_points, timeout_sec=
     return _decode_match_result(result)
 
 
+def _apply_race_cap_env(auto_cap):
+    """Caps the per-process candidate-race width by STARFIX_RACE_MAX_WORKERS when it is set.
+
+    StarFix's batch runner (Services/BatchSolveService.cs, issue #13) runs several solve.exe
+    --server processes in parallel and sets this env var on each so that the TOTAL number of
+    concurrent match-worker subprocesses across all of them stays within the user's "Max
+    workers" budget — outer parallelism (files in flight) and inner parallelism (this race)
+    must not both be left unbounded, or they oversubscribe the CPU (see _run_one_race_attempt).
+    Unset (one-shot CLI solve, or a single-session batch) → the auto value is used unchanged."""
+    env = os.environ.get("STARFIX_RACE_MAX_WORKERS")
+    if env:
+        try:
+            v = int(env)
+            if v >= 1:
+                return max(1, min(auto_cap, v))
+        except ValueError:
+            pass
+    return auto_cap
+
+
 def _run_one_race_attempt(item, attempt_timeout_sec, handles, key):
     """One (fwhm, match_cap) candidate's worker process, run inside a ThreadPoolExecutor
     thread — the thread just blocks on subprocess I/O (the real CPU work happens in the
@@ -184,7 +204,7 @@ def find_transform_race(work_items, attempt_timeout_sec=60.0, overall_budget_sec
     if not work_items:
         raise RuntimeError("No candidates to try.")
 
-    max_workers = max_workers or max(1, min(len(work_items), os.cpu_count() or 4, 8))
+    max_workers = max_workers or _apply_race_cap_env(max(1, min(len(work_items), os.cpu_count() or 4, 8)))
     handles = {}
     last_error = None
     winner = None
@@ -246,8 +266,8 @@ def find_transform_race_interleaved(fwhm_candidates, detect_fn, match_cap_candid
     if not fwhm_candidates:
         raise RuntimeError("No candidates to try.")
 
-    max_workers = max_workers or max(
-        1, min(len(fwhm_candidates) * (1 + len(match_cap_candidates)), os.cpu_count() or 4, 8))
+    max_workers = max_workers or _apply_race_cap_env(max(
+        1, min(len(fwhm_candidates) * (1 + len(match_cap_candidates)), os.cpu_count() or 4, 8)))
 
     handles = {}
     detected_by_fwhm = {}

@@ -19,7 +19,11 @@ public class BatchSolverSession : IDisposable
     private Process? _process;
     private readonly SemaphoreSlim _lock = new(1, 1);
 
-    public void Start(string? catalogDir)
+    /// <param name="raceMaxWorkers">Issue #13: caps this process's internal candidate-race width
+    /// (STARFIX_RACE_MAX_WORKERS). When the batch runs several sessions in parallel, this keeps
+    /// the TOTAL match-worker count (sessions × per-session race width) within the user's budget.
+    /// 0 leaves the solver's own auto value (single-session batches behave exactly as before).</param>
+    public void Start(string? catalogDir, int raceMaxWorkers = 0)
     {
         var psi = new ProcessStartInfo
         {
@@ -33,6 +37,8 @@ public class BatchSolverSession : IDisposable
         psi.ArgumentList.Add("--server");
         if (!string.IsNullOrWhiteSpace(catalogDir))
             psi.EnvironmentVariables["STARFIX_GAIA_CATALOG_DIR"] = catalogDir;
+        if (raceMaxWorkers > 0)
+            psi.EnvironmentVariables["STARFIX_RACE_MAX_WORKERS"] = raceMaxWorkers.ToString();
 
         _process = new Process { StartInfo = psi };
         _process.Start();

@@ -5,7 +5,8 @@
              xmlns:vm="using:StarFix.ViewModels"
              mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="500"
              x:Class="StarFix.Views.SolveView"
-             x:DataType="vm:SolveViewModel">
+             x:DataType="vm:SolveViewModel"
+             DragDrop.AllowDrop="True">
 
     <Border Classes="card">
         <StackPanel Spacing="10">
@@ -26,6 +27,7 @@
                     <TextBox Grid.Column="0" Text="{Binding FilePath}" Watermark="Choose a FITS file…" IsReadOnly="True"/>
                     <Button Grid.Column="1" Classes="toolbar" Content="Browse" Click="OnBrowseClick" Margin="6,0,0,0"/>
                 </Grid>
+                <TextBlock Classes="hint" Text="…or drag a FITS file onto this window."/>
             </StackPanel>
 
             <StackPanel Spacing="4">

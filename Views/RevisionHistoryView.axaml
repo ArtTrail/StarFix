@@ -5,7 +5,14 @@
     <ScrollViewer Padding="24,20">
         <StackPanel Spacing="6">
 
-            <TextBlock Classes="h2" Text="v1.1.1  —  2026-09-04"/>
+            <TextBlock Classes="h2" Text="v1.2.0  —  2026-10-03"/>
+            <TextBlock TextWrapping="Wrap" Text="• New: Batch Solve now solves several files at once instead of one at a time, which is noticeably faster on large batches. A new Max workers setting (Settings → Batch performance) sets the total CPU budget — leave it on Auto, lower it for very large frames or a low-memory machine, or raise it to use more cores. Single-file solves are unchanged."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: drag and drop — drop a FITS file onto the main window to load it for solving, or drop files and folders onto the Batch Solve window to add them to the list."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: the Batch Solve progress log now marks each file with a green check for a successful solve and a red ✗ for a failure, so you can see at a glance how a run went."/>
+            <TextBlock TextWrapping="Wrap" Text="• New: Submit Feedback has an optional GitHub username field — fill it in and you'll be @mentioned on the issue, so GitHub notifies you when it's updated or closed."/>
+            <TextBlock TextWrapping="Wrap" Text="• Changed: the Results panel now clears when you close StarFix, so each launch starts fresh rather than reloading the previous session's results."/>
+
+            <TextBlock Classes="h2" Text="v1.1.1  —  2026-09-04" Margin="0,18,0,0"/>
             <TextBlock TextWrapping="Wrap" Text="• New: macOS (Apple Silicon) build — StarFix is now available for Mac."/>
             <TextBlock TextWrapping="Wrap" Text="• New: Linux (x64) build."/>
             <TextBlock TextWrapping="Wrap" Text="• New: Help → Submit Feedback opens a form (bug report or feature request) that creates a real GitHub Issue directly, no need to leave the app."/>

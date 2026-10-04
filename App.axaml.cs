@@ -24,6 +24,10 @@ public partial class App : Application
                 DataContext = new MainWindowViewModel(),
             };
             desktop.MainWindow = mainWindow;
+
+            // Issue #8: clear the persisted results panel on normal exit so a fresh launch
+            // starts empty instead of reloading the previous session's solves.
+            desktop.ShutdownRequested += (_, _) => ResultsHistoryService.Clear();
         }
 
         base.OnFrameworkInitializationCompleted();

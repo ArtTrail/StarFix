@@ -47,7 +47,7 @@ export default {
       return jsonResponse({ ok: false, error: "Invalid JSON body" }, 400);
     }
 
-    const { repo, type, summary, description, email, version, os } = payload;
+    const { repo, type, summary, description, email, version, os, github_user } = payload;
 
     if (!REPO_ALLOWLIST.includes(repo)) {
       return jsonResponse({ ok: false, error: `Unknown repo "${repo}"` }, 400);
@@ -59,11 +59,25 @@ export default {
 
     const isBug = type === "Bug Report";
     const prefix = isBug ? "[Bug]" : "[Feature]";
-    const label = isBug ? "bug" : "enhancement";
+    // "feedback" tags every user-submitted issue so it's distinguishable from issues the
+    // owner (or Claude via `gh`) files directly. Both are authored by REPO_OWNER's token, so
+    // the issue-notifier Worker (EXCLUDE_OWN) can't tell them apart by author — it keys on
+    // this label to notify on user feedback while still ignoring the owner's own issues.
+    const kindLabel = isBug ? "bug" : "enhancement";
+    const labels = [kindLabel, "feedback"];
     const title = summary && summary.trim() ? `${prefix} ${summary.trim()}` : `${prefix} User Report`;
 
     let body = `**Type:** ${type}\n**Version:** ${version}\n**OS:** ${os}\n`;
     if (email && email.trim()) body += `**Contact:** ${email.trim()}\n`;
+    // Optional GitHub username → @mention, so the submitter is subscribed to the issue and
+    // gets notified when it's updated or closed. Strip a leading "@" and validate against
+    // GitHub's username rules (alphanumeric/hyphen, no leading/trailing/double hyphen, ≤39);
+    // anything that doesn't look like a real handle is ignored so a typo can't @mention a
+    // random account or break the markdown.
+    const ghUser = (github_user || "").trim().replace(/^@+/, "");
+    if (/^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}$/.test(ghUser)) {
+      body += `**Reported by:** @${ghUser}\n`;
+    }
     body += `\n**Description:**\n${description.trim()}\n`;
 
     const ghResponse = await fetch(
@@ -77,7 +91,7 @@ export default {
           "X-GitHub-Api-Version": "2022-11-28",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, body, labels: [label] }),
+        body: JSON.stringify({ title, body, labels }),
       }
     );
 

@@ -126,7 +126,7 @@ public static class SelfTest
         Action<StarFix.Models.SolveOutcome> onResult = outcome => newResults.Add(
             (System.IO.Path.GetFileName(outcome.SolvedPath), outcome.Success,
              outcome.Result?.NumMatched ?? -1, outcome.Result?.NumDetected ?? -1, outcome.Result?.RmsPixels ?? -1));
-        await BatchSolveService.RunAsync(newFiles, 0.5, overwriteExisting: true, catalogDir, progress, onResult, default);
+        await BatchSolveService.RunAsync(newFiles, 0.5, overwriteExisting: true, catalogDir, maxWorkers: 0, progress, onResult, default);
         swNew.Stop();
         Console.WriteLine($"\nNEW (persistent session): {swNew.Elapsed.TotalSeconds:F1}s total for {newFiles.Length} files");
         foreach (var r in newResults)
@@ -150,7 +150,7 @@ public static class SelfTest
 
         try
         {
-            await BatchSolveService.RunAsync(files, 1.5, overwriteExisting: true, catalogDir, progress, null, cts.Token);
+            await BatchSolveService.RunAsync(files, 1.5, overwriteExisting: true, catalogDir, maxWorkers: 0, progress, null, cts.Token);
             Console.WriteLine("Batch finished before cancel took effect.");
         }
         catch (OperationCanceledException)
